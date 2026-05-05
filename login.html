@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Connexion — Permanences & Back-Up</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f3ef;--bg2:#fff;--border:#ddd9d2;--text:#2c2a26;--text2:#7a766e;--ink:#1a3a5c;--ink-dim:rgba(26,58,92,.08);--red:#b83232;--r:7px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+.box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:40px 44px;width:380px;box-shadow:0 4px 24px rgba(0,0,0,.08);}
+.logo{font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:var(--ink);margin-bottom:6px;letter-spacing:-.02em;}
+.logo em{font-weight:400;font-style:italic;color:var(--text2);}
+.sub{font-size:12px;color:var(--text2);margin-bottom:32px;}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
+.flbl{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;}
+input{font-family:'DM Sans',sans-serif;font-size:13px;background:#f0ede8;color:var(--text);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;outline:none;width:100%;transition:border .15s,box-shadow .15s;}
+input:focus{border-color:var(--ink);box-shadow:0 0 0 3px var(--ink-dim);background:#fff;}
+.btn{width:100%;padding:11px;background:var(--ink);color:#fff;border:none;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;margin-top:8px;}
+.btn:hover{background:#1e4a73;}
+.err{background:#fee2e2;border:1px solid rgba(184,50,50,.25);border-radius:var(--r);padding:10px 14px;font-size:12px;color:var(--red);margin-bottom:16px;display:none;}
+.err.on{display:block;}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="logo">Permanences <em>& Back-Up</em></div>
+  <div class="sub">Genève — Accès sécurisé</div>
+  <div class="err" id="err"></div>
+  <div class="fg">
+    <label class="flbl">Identifiant</label>
+    <input type="text" id="user" placeholder="admin" autocomplete="username">
+  </div>
+  <div class="fg">
+    <label class="flbl">Mot de passe</label>
+    <input type="password" id="pass" placeholder="••••••••" autocomplete="current-password">
+  </div>
+  <button class="btn" onclick="login()">Se connecter</button>
+</div>
+<script>
+document.getElementById('pass').addEventListener('keydown', e=>{ if(e.key==='Enter') login(); });
+document.getElementById('user').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('pass').focus(); });
+async function login(){
+  const username=document.getElementById('user').value.trim();
+  const password=document.getElementById('pass').value;
+  const errEl=document.getElementById('err');
+  errEl.classList.remove('on');
+  if(!username||!password){errEl.textContent='Veuillez remplir tous les champs.';errEl.classList.add('on');return;}
+  try{
+    const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});
+    const d=await r.json();
+    if(d.ok){window.location.href='/';}
+    else{errEl.textContent=d.error||'Erreur de connexion.';errEl.classList.add('on');}
+  }catch(e){errEl.textContent='Erreur réseau.';errEl.classList.add('on');}
+}
+</script>
+</body>
+</html>
