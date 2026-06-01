@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Permanences & Back-Up — Genève</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f3ef; --bg2:#ffffff; --bg3:#f0ede8; --bg4:#e8e4dd;
+  --border:#ddd9d2; --border2:#c8c3ba;
+  --text:#2c2a26; --text2:#7a766e; --text3:#b0aca4;
+  --ink:#1a3a5c; --ink-dim:rgba(26,58,92,0.08);
+  --teal:#2a7a6e; --teal-dim:rgba(42,122,110,0.09);
+  --amber:#b86e1a; --amber-dim:rgba(184,110,26,0.09);
+  --red:#b83232; --red-dim:rgba(184,50,50,0.08);
+  --violet:#6a3a9a;
+  --r:7px; --rl:12px;
+  --sh:0 1px 3px rgba(0,0,0,0.07),0 4px 12px rgba(0,0,0,0.04);
+  --shl:0 4px 20px rgba(0,0,0,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13px;-webkit-font-smoothing:antialiased;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg3);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+
+/* HEADER */
+.hdr{position:sticky;top:0;z-index:200;background:rgba(245,243,239,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:54px;padding:0 28px;}
+.logo{font-family:'Fraunces',serif;font-weight:700;font-size:15px;color:var(--ink);margin-right:32px;white-space:nowrap;letter-spacing:-0.02em;}
+.logo em{color:var(--text2);font-style:italic;font-weight:400;}
+.nav{display:flex;gap:2px;}
+.nbtn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--text2);background:none;border:none;padding:6px 15px;border-radius:var(--r);cursor:pointer;transition:all .15s;}
+.nbtn:hover{color:var(--text);background:var(--bg3);}
+.nbtn.on{color:var(--ink);background:var(--ink-dim);font-weight:600;}
+
+/* LAYOUT */
+.main{padding:28px 32px;max-width:1440px;margin:0 auto;}
+.tp{display:none;animation:fi .2s ease;}
+.tp.on{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:20px 24px;margin-bottom:16px;box-shadow:var(--sh);}
+.cflat{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);margin-bottom:16px;overflow:hidden;box-shadow:var(--sh);}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 15px;border-radius:var(--r);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.01em;transition:all .15s;white-space:nowrap;}
+.bink{background:var(--ink);color:#fff;} .bink:hover{background:#1e4a73;}
+.bteal{background:var(--teal);color:#fff;} .bteal:hover{background:#338a7d;}
+.bgh{background:transparent;color:var(--text2);border:1px solid var(--border2);} .bgh:hover{color:var(--text);background:var(--bg3);}
+.bred{background:var(--red);color:#fff;} .bred:hover{background:#c94040;}
+.bamb{background:var(--amber);color:#fff;} .bamb:hover{background:#c97e30;}
+
+/* INPUTS */
+input,select{font-family:'DM Sans',sans-serif;font-size:12px;background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:var(--r);padding:7px 10px;outline:none;transition:border .15s,box-shadow .15s;}
+input:focus,select:focus{border-color:var(--ink);box-shadow:0 0 0 3px var(--ink-dim);background:#fff;}
+select option{background:#fff;}
+
+/* SUB TABS */
+.stabs{display:flex;border-bottom:2px solid var(--border);margin-bottom:24px;}
+.stab{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--text2);background:none;border:none;padding:9px 18px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;}
+.stab:hover{color:var(--text);}
+.stab.on{color:var(--ink);border-bottom-color:var(--ink);font-weight:600;}
+
+/* ROW UTILS */
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.sline{flex:1;height:1px;background:var(--border);}
+.stitle{font-family:'Fraunces',serif;font-weight:600;font-size:15px;color:var(--text);letter-spacing:-0.02em;}
+.mb{margin-bottom:16px;}
+
+/* TAGS */
+.tag{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;margin:1px;}
+.ttt{background:var(--ink-dim);color:var(--ink);border:1px solid rgba(26,58,92,0.15);}
+.tcg{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(184,110,26,0.2);}
+.tabs2{background:var(--red-dim);color:var(--red);border:1px solid rgba(184,50,50,0.2);}
+.t100{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(42,122,110,0.2);}
+.t80{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(184,110,26,0.2);}
+.t50{background:rgba(106,58,154,0.08);color:var(--violet);border:1px solid rgba(106,58,154,0.2);}
+.tfer{background:var(--bg3);color:var(--text2);border:1px solid var(--border);}
+.pw{display:flex;flex-wrap:wrap;gap:3px;}
+
+/* GEST TABLE */
+.gt{width:100%;border-collapse:collapse;font-size:12px;}
+.gt th{background:var(--bg3);border-bottom:1px solid var(--border);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;}
+.gt td{border-bottom:1px solid var(--border);padding:9px 12px;vertical-align:middle;}
+.gt tbody tr:hover td{background:#faf9f7;}
+.gt tbody tr:last-child td{border-bottom:none;}
+.mono{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink);font-weight:500;}
+
+/* FERIE TABLE */
+.ft{width:100%;border-collapse:collapse;font-size:12px;}
+.ft th{background:var(--bg3);border-bottom:1px solid var(--border);padding:9px 12px;text-align:left;font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;}
+.ft td{border-bottom:1px solid var(--border);padding:9px 12px;vertical-align:middle;}
+.ft tbody tr:hover td{background:#faf9f7;}
+.ft tbody tr:last-child td{border-bottom:none;}
+
+/* STAT TABLE */
+.st{width:100%;border-collapse:collapse;font-size:11px;}
+.st th{background:var(--bg3);color:var(--text2);padding:8px 10px;text-align:center;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;border:1px solid var(--border);white-space:nowrap;}
+.st th.mh{background:var(--ink-dim);color:var(--ink);}
+.st th.th{background:rgba(42,122,110,0.07);color:var(--teal);}
+.st td{border:1px solid var(--border);padding:7px 10px;text-align:center;}
+.st tbody tr:hover td{background:#faf9f7;}
+.st .gn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;color:var(--ink);text-align:left;padding-left:14px;}
+.st .pv{color:var(--ink);font-weight:600;}
+.st .bv{color:var(--teal);font-weight:600;}
+.st .tot td{background:#f0f7f5;font-weight:600;}
+
+/* KPI */
+.kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:18px 20px;box-shadow:var(--sh);}
+.kval{font-family:'Fraunces',serif;font-size:32px;font-weight:700;line-height:1;margin-bottom:5px;color:var(--ink);}
+.klbl{font-size:10px;color:var(--text2);letter-spacing:.05em;text-transform:uppercase;font-weight:500;}
+.kteal .kval{color:var(--teal);}
+.kamb .kval{color:var(--amber);}
+.upd{display:inline-flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:10px;color:var(--text2);margin-bottom:20px;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--teal);}
+
+/* PLANNING TABLE */
+.pwrap{overflow-x:auto;}
+.ptbl{border-collapse:collapse;font-size:12px;min-width:700px;width:100%;}
+.ptbl th{background:var(--ink);color:rgba(255,255,255,.9);padding:9px 12px;text-align:center;font-size:10px;font-weight:600;border:1px solid rgba(255,255,255,.1);text-transform:uppercase;letter-spacing:.05em;}
+.ptbl td{border:1px solid var(--border);padding:0;text-align:center;min-width:90px;}
+.pc{padding:8px 5px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;position:relative;overflow:visible;}
+.pc.ed{cursor:pointer;}
+.pc.ed:hover{outline:2px solid var(--ink);outline-offset:-2px;border-radius:3px;}
+.pc.past{cursor:not-allowed;opacity:.75;}
+.cpm{background:rgba(26,58,92,0.07);color:var(--ink);}
+.cpa{background:rgba(26,58,92,0.14);color:#1e4a73;}
+.cbu{background:rgba(42,122,110,0.08);color:var(--teal);}
+.cbuf{background:rgba(184,110,26,0.12);color:var(--amber);}
+/* JOURS FÉRIÉS : toute la cellule en gris sombre */
+.cfer{background:#555b6e;color:#ffffff;font-size:9px;letter-spacing:.04em;font-weight:700;}
+.cemp{background:var(--bg3);}
+.lcell{background:var(--bg3);color:var(--text2);font-size:10px;font-weight:600;padding:8px 12px;text-align:right;white-space:nowrap;border:1px solid var(--border);}
+.sepr td{height:10px;background:var(--bg);border:none!important;}
+
+/* LEGEND */
+.legend{display:flex;gap:18px;flex-wrap:wrap;padding:11px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:20px;box-shadow:var(--sh);}
+.li{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text2);}
+.ld{width:10px;height:10px;border-radius:2px;}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:.03em;}
+.bok{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(42,122,110,.25);}
+.bpend{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(184,110,26,.25);}
+
+/* ARCHIVES */
+.aitem{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);margin-bottom:10px;overflow:hidden;box-shadow:var(--sh);}
+.ahd{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;cursor:pointer;transition:background .15s;}
+.ahd:hover{background:var(--bg3);}
+.attl{font-family:'Fraunces',serif;font-weight:600;font-size:13px;color:var(--text);}
+.abd{display:none;padding:20px;border-top:1px solid var(--border);}
+.abd.on{display:block;}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(44,42,38,.45);backdrop-filter:blur(6px);z-index:900;align-items:center;justify-content:center;}
+.overlay.on{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:28px 30px;width:640px;max-width:96vw;max-height:88vh;overflow-y:auto;box-shadow:var(--shl);}
+.mtitle{font-family:'Fraunces',serif;font-weight:600;font-size:17px;color:var(--text);margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg.full{grid-column:1/-1;}
+.flbl{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;}
+.fg input,.fg select{width:100%;}
+/* PILL BUTTONS pour TT et Congés */
+.cbg{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px;}
+.cbi{display:flex;align-items:center;justify-content:center;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:var(--bg3);font-size:12px;cursor:pointer;color:var(--text2);transition:all .12s;user-select:none;font-family:'DM Sans',sans-serif;}
+.cbi:hover{border-color:var(--ink);color:var(--text);}
+.cbi.sel-tt{background:var(--ink-dim);border-color:var(--ink);color:var(--ink);font-weight:600;}
+.cbi.sel-cg{background:var(--amber-dim);border-color:var(--amber);color:var(--amber);font-weight:600;}
+.mfoot{display:flex;gap:8px;justify-content:flex-end;margin-top:22px;padding-top:16px;border-top:1px solid var(--border);}
+.abslist{margin-top:8px;}
+.absitem{display:flex;align-items:center;gap:8px;padding:7px 12px;background:var(--red-dim);border:1px solid rgba(184,50,50,.15);border-radius:var(--r);margin-bottom:6px;font-size:12px;}
+.adel{margin-left:auto;cursor:pointer;color:var(--red);background:none;border:none;font-size:15px;line-height:1;}
+.divider{height:1px;background:var(--border);margin:16px 0;}
+
+/* CELL PICKER */
+.cpick{position:fixed;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);box-shadow:var(--shl);z-index:500;min-width:180px;padding:6px;max-height:280px;overflow-y:auto;}
+.cpi{padding:7px 10px;border-radius:5px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);display:flex;align-items:center;justify-content:space-between;gap:8px;transition:background .1s;}
+.cpi:hover{background:var(--ink-dim);color:var(--ink);}
+.cpi.dis{opacity:.35;cursor:not-allowed;pointer-events:none;}
+.cpisub{font-size:9px;color:var(--text2);font-family:'DM Sans',sans-serif;}
+.cpsep{height:1px;background:var(--border);margin:4px 0;}
+
+/* CELLULE VERROUILLÉE */
+.pc.locked{cursor:not-allowed!important;opacity:.85;}
+.pc.locked:hover{outline:none!important;}
+.lock-icon{position:absolute;top:2px;left:2px;font-size:8px;opacity:.5;}
+
+/* VUE ÉQUIPE */
+.team-view{display:none;position:fixed;inset:0;background:var(--bg);z-index:300;overflow-y:auto;}
+.team-view.on{display:block;}
+.tv-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+.tv-title{font-family:'Fraunces',serif;font-weight:700;font-size:16px;color:var(--ink);}
+.tv-sub{font-size:11px;color:var(--text2);margin-top:2px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--ink);color:#fff;padding:12px 18px;border-radius:var(--r);font-size:12px;font-weight:500;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);max-width:340px;box-shadow:var(--shl);}
+.toast.on{transform:translateY(0);opacity:1;}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="logo">Permanences <em>& Back-Up</em></div>
+  <nav class="nav">
+    <button class="nbtn on" onclick="showTab('reglages',this)">Réglages</button>
+    <button class="nbtn" onclick="showTab('stats',this)">Statistiques</button>
+    <button class="nbtn" onclick="showTab('tableau',this)">Tableau</button>
+  </nav>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+    <span id="saveInd" style="font-size:11px;color:var(--teal);opacity:0;transition:opacity .4s"></span>
+    <span id="userLabel" style="font-size:11px;color:var(--text2);font-weight:500"></span>
+    <button class="btn bgh" onclick="openChangePwd()" style="padding:4px 10px;font-size:11px">🔑 Mot de passe</button>
+    <button class="btn bred" onclick="logout()" style="padding:4px 10px;font-size:11px">Déconnexion</button>
+  </div>
+</header>
+
+<div class="main">
+
+<!-- ══════════ RÉGLAGES ══════════ -->
+<div id="tp-reglages" class="tp on">
+  <div class="stabs">
+    <button class="stab on" onclick="showStab('gest',this)">Gestionnaires</button>
+    <button class="stab" onclick="showStab('feries',this)">Jours fériés</button>
+  </div>
+
+  <!-- Gestionnaires -->
+  <div id="st-gest">
+    <div class="row mb">
+      <div class="stitle">Gestionnaires</div><div class="sline"></div>
+      <button class="btn bink" onclick="openAdd()">+ Ajouter</button>
+    </div>
+    <div class="cflat"><div style="overflow-x:auto">
+      <table class="gt">
+        <thead><tr>
+          <th>Gestionnaire</th><th>Taux</th><th>Télétravail</th>
+          <th>Congés fixes</th><th>Absences</th>
+          <th style="text-align:center">Perm.</th><th style="text-align:center">BU</th><th></th>
+        </tr></thead>
+        <tbody id="gtbody"></tbody>
+      </table>
+    </div></div>
+  </div>
+
+  <!-- Jours fériés -->
+  <div id="st-feries" style="display:none">
+    <div class="row mb"><div class="stitle">Jours fériés</div><div class="sline"></div></div>
+    <div class="card">
+      <div class="row" style="gap:10px;flex-wrap:wrap;margin-bottom:16px">
+        <div class="fg" style="flex:0 0 auto"><label class="flbl">Date</label><input type="date" id="fNewDate" style="width:160px"></div>
+        <div class="fg" style="flex:1;min-width:180px"><label class="flbl">Libellé</label><input type="text" id="fNewLabel" placeholder="ex: Fête nationale" style="width:100%"></div>
+        <div style="align-self:flex-end"><button class="btn bink" onclick="addFerie()">+ Ajouter</button></div>
+      </div>
+      <div class="divider" style="margin:0 0 16px"></div>
+      <div style="overflow-x:auto"><table class="ft">
+        <thead><tr><th>Date</th><th>Jour</th><th>Libellé</th><th></th></tr></thead>
+        <tbody id="ftbody"></tbody>
+      </table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ STATISTIQUES ══════════ -->
+<div id="tp-stats" class="tp">
+  <div class="kgrid" id="kgrid"></div>
+  <div class="row" style="margin-bottom:16px">
+    <div class="upd" style="margin-bottom:0"><div class="dot"></div><span id="updtxt">—</span></div>
+    <div style="margin-left:auto">
+      <button class="btn bgh" onclick="printStats()">🖨 Imprimer les statistiques</button>
+    </div>
+  </div>
+  <div class="cflat"><div style="overflow-x:auto"><table class="st" id="stattbl"></table></div></div>
+</div>
+
+<!-- ══════════ TABLEAU ══════════ -->
+<div id="tp-tableau" class="tp">
+  <div class="card">
+    <div class="row">
+      <div class="row" style="gap:8px">
+        <select id="selM" style="width:130px">
+          <option value="0">Janvier</option><option value="1">Février</option><option value="2">Mars</option>
+          <option value="3">Avril</option><option value="4">Mai</option><option value="5">Juin</option>
+          <option value="6">Juillet</option><option value="7">Août</option><option value="8">Septembre</option>
+          <option value="9">Octobre</option><option value="10">Novembre</option><option value="11">Décembre</option>
+        </select>
+        <select id="selY" style="width:90px"></select>
+      </div>
+      <button class="btn bink" id="btnGen" onclick="genTable()">⚡ Générer</button>
+      <button class="btn bteal" id="btnVal" onclick="valTable()" style="display:none">✓ Valider & màj stats</button>
+      <button class="btn bgh" id="btnPrt" onclick="printCurrent()" style="display:none">🖨 Imprimer</button>
+    </div>
+  </div>
+  <div class="legend">
+    <div class="li"><div class="ld" style="background:rgba(26,58,92,.15)"></div>Perm. matin 9h–12h30</div>
+    <div class="li"><div class="ld" style="background:rgba(26,58,92,.28)"></div>Perm. après-midi 12h30–16h</div>
+    <div class="li"><div class="ld" style="background:rgba(42,122,110,.2)"></div>Back-Up</div>
+    <div class="li"><div class="ld" style="background:rgba(184,110,26,.25)"></div>Back-Up en TT (exceptionnel)</div>
+    <div class="li"><div class="ld" style="background:#555b6e"></div>Jour férié</div>
+    <div class="li"><span style="font-size:11px">✏</span>Modifiable (clic)</div>
+    <div class="li"><span style="font-size:11px">🔒</span>Passé</div>
+  </div>
+  <div id="preview"></div>
+  <div style="margin-top:32px">
+    <div class="row mb">
+      <div class="stitle">Tableaux archivés</div>
+      <div class="sline"></div>
+      <button class="btn bgh" onclick="printAllArch()" style="white-space:nowrap">🖨 Tout imprimer</button>
+    </div>
+    <div id="archlist"></div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- ══════════ MODAL GESTIONNAIRE ══════════ -->
+<div class="overlay" id="gmodal">
+<div class="modal">
+  <div class="mtitle" id="mtitle">Ajouter un gestionnaire</div>
+  <div class="fgrid">
+    <div class="fg"><label class="flbl">Nom (code)</label>
+      <input type="text" id="fNom" placeholder="ex: GEDOC" oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="fg"><label class="flbl">Taux</label>
+      <select id="fTaux"><option value="100">100 %</option><option value="80">80 %</option><option value="50">50 %</option></select></div>
+    <div class="fg full"><label class="flbl">Date d'incorporation au planning perm.</label>
+      <input type="date" id="fIncorp"></div>
+    <div class="fg full">
+      <label class="flbl">Jours de télétravail — cliquer pour sélectionner</label>
+      <div class="cbg" id="fTT">
+        <span class="cbi" data-v="Lundi" onclick="togCb(this,'tt')">Lundi</span>
+        <span class="cbi" data-v="Mardi" onclick="togCb(this,'tt')">Mardi</span>
+        <span class="cbi" data-v="Mercredi" onclick="togCb(this,'tt')">Mercredi</span>
+        <span class="cbi" data-v="Jeudi" onclick="togCb(this,'tt')">Jeudi</span>
+        <span class="cbi" data-v="Vendredi" onclick="togCb(this,'tt')">Vendredi</span>
+      </div>
+    </div>
+    <div class="fg full">
+      <label class="flbl">Congés fixes — cliquer pour sélectionner</label>
+      <div class="cbg" id="fCG">
+        <span class="cbi" data-v="Lundi" onclick="togCb(this,'cg')">Lundi</span>
+        <span class="cbi" data-v="Mardi" onclick="togCb(this,'cg')">Mardi</span>
+        <span class="cbi" data-v="Mercredi" onclick="togCb(this,'cg')">Mercredi</span>
+        <span class="cbi" data-v="Jeudi" onclick="togCb(this,'cg')">Jeudi</span>
+        <span class="cbi" data-v="Vendredi" onclick="togCb(this,'cg')">Vendredi</span>
+        <span class="cbi" data-v="Lundi matin" onclick="togCb(this,'cg')">Lun. mat.</span>
+        <span class="cbi" data-v="Lundi après-midi" onclick="togCb(this,'cg')">Lun. apr.</span>
+        <span class="cbi" data-v="Mardi matin" onclick="togCb(this,'cg')">Mar. mat.</span>
+        <span class="cbi" data-v="Mardi après-midi" onclick="togCb(this,'cg')">Mar. apr.</span>
+        <span class="cbi" data-v="Mercredi matin" onclick="togCb(this,'cg')">Mer. mat.</span>
+        <span class="cbi" data-v="Mercredi après-midi" onclick="togCb(this,'cg')">Mer. apr.</span>
+        <span class="cbi" data-v="Jeudi matin" onclick="togCb(this,'cg')">Jeu. mat.</span>
+        <span class="cbi" data-v="Jeudi après-midi" onclick="togCb(this,'cg')">Jeu. apr.</span>
+        <span class="cbi" data-v="Vendredi matin" onclick="togCb(this,'cg')">Ven. mat.</span>
+        <span class="cbi" data-v="Vendredi après-midi" onclick="togCb(this,'cg')">Ven. apr.</span>
+      </div>
+    </div>
+    <div class="fg full">
+      <label class="flbl">Absence ponctuelle (maladie / arrêt)</label>
+      <div class="row" style="gap:8px;flex-wrap:wrap">
+        <input type="date" id="fAbsDeb" style="flex:1;min-width:120px">
+        <span style="color:var(--text2);font-size:11px;align-self:center">→</span>
+        <input type="date" id="fAbsFin" style="flex:1;min-width:120px">
+        <select id="fAbsType" style="flex:1;min-width:110px">
+          <option value="Maladie">Maladie</option>
+          <option value="Arrêt travail">Arrêt travail</option>
+          <option value="Autre">Autre</option>
+        </select>
+        <button class="btn bgh" onclick="addAbs()">+ Ajouter</button>
+      </div>
+      <div class="abslist" id="abslist"></div>
+    </div>
+    <div class="fg"><label class="flbl">Permanences manuelles (YTD)</label>
+      <input type="number" id="fPermMan" value="0" min="0" step="0.5"></div>
+    <div class="fg"><label class="flbl">Back-Up manuels (YTD)</label>
+      <input type="number" id="fBuMan" value="0" min="0" step="0.5"></div>
+  </div>
+  <div class="mfoot">
+    <button class="btn bgh" onclick="closeModal()">Annuler</button>
+    <button class="btn bink" onclick="saveGest()">Enregistrer</button>
+  </div>
+</div>
+</div>
+
+<!-- CELL PICKER -->
+<div class="cpick" id="cpick" style="display:none"></div>
+<!-- MODAL CHANGEMENT MDP -->
+<div class="overlay" id="pwdModal">
+<div class="modal" style="max-width:420px">
+  <div class="mtitle">Changer le mot de passe</div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div class="fg full"><label class="flbl">Mot de passe actuel</label><input type="password" id="pwdCur" style="width:100%"></div>
+    <div class="fg full"><label class="flbl">Nouveau mot de passe</label><input type="password" id="pwdNew" style="width:100%"></div>
+    <div class="fg full"><label class="flbl">Confirmer le nouveau</label><input type="password" id="pwdNew2" style="width:100%"></div>
+    <div id="pwdErr" style="font-size:12px;color:var(--red);min-height:16px"></div>
+  </div>
+  <div class="mfoot">
+    <button class="btn bgh" onclick="closeChangePwd()">Annuler</button>
+    <button class="btn bink" onclick="changePwd()">Enregistrer</button>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- VUE ÉQUIPE -->
+<div class="team-view" id="teamView">
+  <div class="tv-header">
+    <div>
+      <div class="tv-title" id="tvTitle">Planning du mois en cours</div>
+      <div class="tv-sub" id="tvSub"></div>
+    </div>
+    <button class="btn bgh" onclick="closeTeamView()" style="font-size:11px">✕ Fermer</button>
+  </div>
+  <div style="padding:20px 24px" id="tvBody"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// DONNÉES
+// ═══════════════════════════════════════════
+let G = [
+  {id:1,nom:'GEDOC',taux:100,tt:['Mardi','Vendredi'],cg:[],abs:[],pm:0,bm:0,inc:null},
+  {id:2,nom:'GECID',taux:100,tt:['Lundi','Mercredi'],cg:[],abs:[],pm:0,bm:0,inc:null},
+  {id:3,nom:'GELAF',taux:100,tt:['Mardi','Vendredi'],cg:[],abs:[],pm:0,bm:0,inc:null},
+  {id:4,nom:'GEGEK',taux:100,tt:['Mardi','Vendredi'],cg:[],abs:[],pm:0,bm:0,inc:null},
+  {id:5,nom:'GETHD',taux:100,tt:['Mardi','Jeudi'],cg:[],abs:[],pm:0,bm:0,inc:null},
+  {id:6,nom:'GEMAR',taux:100,tt:['Mercredi','Vendredi'],cg:[],abs:[],pm:0,bm:0,inc:null},
+  {id:7,nom:'GEMIP',taux:100,tt:['Lundi','Jeudi'],cg:[],abs:[],pm:0,bm:0,inc:null},
+  {id:8,nom:'GECDA',taux:100,tt:[],cg:[],abs:[],pm:0,bm:0,inc:null},
+  {id:9,nom:'GERMO',taux:80,tt:['Mardi','Jeudi'],cg:['Vendredi'],abs:[],pm:0,bm:0,inc:null},
+  {id:10,nom:'GEMNM',taux:80,tt:['Mardi','Jeudi'],cg:['Vendredi'],abs:[],pm:0,bm:0,inc:null},
+  {id:11,nom:'GECOL',taux:80,tt:['Lundi','Jeudi'],cg:['Mercredi'],abs:[],pm:0,bm:0,inc:null},
+  {id:12,nom:'GEKRF',taux:80,tt:['Lundi','Jeudi'],cg:['Mercredi'],abs:[],pm:0,bm:0,inc:null},
+  {id:13,nom:'GEGIG',taux:50,tt:[],cg:['Lundi','Mardi après-midi','Jeudi après-midi','Vendredi après-midi'],abs:[],pm:0,bm:0,inc:null},
+  {id:14,nom:'GESEJ',taux:50,tt:[],cg:['Lundi','Mercredi après-midi','Vendredi'],abs:[],pm:0,bm:0,inc:null},
+];
+
+let FERIES = [
+  {date:'2025-01-01',label:'Nouvel An'},
+  {date:'2025-04-18',label:'Vendredi-Saint'},
+  {date:'2025-04-21',label:'Lundi de Pâques'},
+  {date:'2025-05-29',label:'Jeudi de l\'Ascension'},
+  {date:'2025-06-09',label:'Lundi de Pentecôte'},
+  {date:'2025-09-11',label:'Jeûne genevois'},
+  {date:'2025-12-25',label:'Noël'},
+  {date:'2025-12-31',label:'Restauration de la République'},
+  {date:'2026-01-01',label:'Nouvel An'},
+  {date:'2026-04-03',label:'Vendredi-Saint'},
+  {date:'2026-04-06',label:'Lundi de Pâques'},
+  {date:'2026-05-14',label:'Jeudi de l\'Ascension'},
+  {date:'2026-05-25',label:'Lundi de Pentecôte'},
+  {date:'2026-09-10',label:'Jeûne genevois'},
+  {date:'2026-12-25',label:'Noël'},
+  {date:'2026-12-31',label:'Restauration de la République'},
+];
+
+let ARC = {};         // archives: key "YYYY-MM" -> {tableData, validated, perm, bu, month, year}
+let editId = null;
+let tempAbs = [];
+let preview = null;   // {key, month, year, tableData}
+let LOCKED = new Set(); // cellules verrouillées
+
+const JOURS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi'];
+const MOIS  = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const JNAMES= ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+
+const fSet = () => new Set(FERIES.map(f=>f.date));
+const today = () => ds(new Date());
+const ds = d => `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`;
+const p2 = n => String(n).padStart(2,'0');
+const fmtD = s => { if(!s)return''; const[y,m,d]=s.split('-'); return `${d}/${m}/${y}`; };
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════
+// AUTH + SYNC SERVEUR
+// ═══════════════════════════════════════════
+let _currentUser = null;
+let _saveTimeout = null;
+
+async function checkAuth(){
+  try{
+    const r = await fetch('/api/me');
+    if(r.status===401){ window.location.href='/login.html'; return false; }
+    const d = await r.json();
+    _currentUser = d.user;
+    document.getElementById('userLabel').textContent = _currentUser.username;
+    return true;
+  }catch(e){ window.location.href='/login.html'; return false; }
+}
+
+async function loadFromServer(){
+  try{
+    const r = await fetch('/api/data');
+    if(r.status===401){ window.location.href='/login.html'; return; }
+    const d = await r.json();
+    if(d.gestionnaires && d.gestionnaires.length) G = d.gestionnaires;
+    if(d.feries && d.feries.length) FERIES = d.feries;
+    if(d.archives) ARC = d.archives;
+  }catch(e){ console.error('Erreur chargement données:', e); }
+}
+
+function saveToServer(){
+  // Debounce : attendre 800ms après le dernier changement avant de sauvegarder
+  clearTimeout(_saveTimeout);
+  _saveTimeout = setTimeout(async ()=>{
+    try{
+      const payload = { gestionnaires: G, feries: FERIES, archives: ARC };
+      const r = await fetch('/api/data',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if(r.status===401){ window.location.href='/login.html'; return; }
+      // Indicateur visuel discret
+      const ind = document.getElementById('saveInd');
+      if(ind){ ind.textContent='✓ Sauvegardé'; ind.style.opacity='1';
+        setTimeout(()=>{ ind.style.opacity='0'; }, 2000); }
+    }catch(e){ console.error('Erreur sauvegarde:', e); }
+  }, 800);
+}
+
+async function logout(){
+  await fetch('/api/logout',{method:'POST'});
+  window.location.href='/login.html';
+}
+
+function openChangePwd(){
+  document.getElementById('pwdModal').classList.add('on');
+  document.getElementById('pwdErr').textContent='';
+  document.getElementById('pwdCur').value='';
+  document.getElementById('pwdNew').value='';
+  document.getElementById('pwdNew2').value='';
+}
+function closeChangePwd(){ document.getElementById('pwdModal').classList.remove('on'); }
+
+async function changePwd(){
+  const cur=document.getElementById('pwdCur').value;
+  const nw=document.getElementById('pwdNew').value;
+  const nw2=document.getElementById('pwdNew2').value;
+  const errEl=document.getElementById('pwdErr');
+  if(!cur||!nw||!nw2){errEl.textContent='Tous les champs sont requis.';return;}
+  if(nw!==nw2){errEl.textContent='Les nouveaux mots de passe ne correspondent pas.';return;}
+  if(nw.length<8){errEl.textContent='Minimum 8 caractères.';return;}
+  try{
+    const r=await fetch('/api/change-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({currentPassword:cur,newPassword:nw})});
+    const d=await r.json();
+    if(d.ok){ closeChangePwd(); toast('✓ Mot de passe modifié'); }
+    else errEl.textContent=d.error||'Erreur.';
+  }catch(e){ errEl.textContent='Erreur réseau.'; }
+}
+
+window.onload = async () => {
+  const ok = await checkAuth();
+  if(!ok) return;
+
+  const ys = document.getElementById('selY'), cy = new Date().getFullYear();
+  for(let y=cy-1;y<=cy+3;y++){
+    const o=document.createElement('option');
+    o.value=y; o.textContent=y;
+    if(y===cy) o.selected=true;
+    ys.appendChild(o);
+  }
+  document.getElementById('selM').value = new Date().getMonth();
+
+  // Charger les données depuis le serveur
+  await loadFromServer();
+
+  renderG(); renderF(); renderStat(); renderArch();
+  document.addEventListener('click', e => {
+    const p = document.getElementById('cpick');
+    if(p.style.display!=='none' && !p.contains(e.target) && !e.target.closest('.pc.ed'))
+      p.style.display='none';
+  });
+};
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+function showTab(t, btn) {
+  document.querySelectorAll('.tp').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nbtn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tp-'+t).classList.add('on');
+  btn.classList.add('on');
+  if(t==='stats') renderStat();
+  if(t==='tableau') renderArch();
+}
+function showStab(t, btn) {
+  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('st-gest').style.display  = t==='gest'   ? '' : 'none';
+  document.getElementById('st-feries').style.display= t==='feries' ? '' : 'none';
+}
+
+// ═══════════════════════════════════════════
+// PILL TOGGLES
+// ═══════════════════════════════════════════
+function togCb(el, type) {
+  if(type==='tt') el.classList.toggle('sel-tt');
+  else            el.classList.toggle('sel-cg');
+}
+function getCb(containerId, cls) {
+  return [...document.querySelectorAll(`#${containerId} .${cls}`)].map(e=>e.dataset.v);
+}
+function setCb(containerId, vals, cls) {
+  document.querySelectorAll(`#${containerId} .cbi`).forEach(e => {
+    e.classList.remove('sel-tt','sel-cg');
+    if(vals.includes(e.dataset.v)) e.classList.add(cls);
+  });
+}
+
+// ═══════════════════════════════════════════
+// GESTIONNAIRES — RENDER
+// ═══════════════════════════════════════════
+function renderG() {
+  const tb = document.getElementById('gtbody');
+  tb.innerHTML = '';
+  G.forEach(g => {
+    const tc = g.taux===100?'t100':g.taux===80?'t80':'t50';
+    const ttH = g.tt.length ? g.tt.map(d=>`<span class="tag ttt">${d.substring(0,3)}</span>`).join('') : '<span style="color:var(--text3)">—</span>';
+    const cgH = g.cg.length ? g.cg.map(c=>`<span class="tag tcg" title="${c}">${c.length>10?c.substring(0,9)+'…':c}</span>`).join('') : '<span style="color:var(--text3)">—</span>';
+    const abH = g.abs.length ? g.abs.map(a=>`<span class="tag tabs2">${fmtD(a.deb)}→${fmtD(a.fin)}</span>`).join('') : '<span style="color:var(--text3)">—</span>';
+    const incH = g.inc ? `<div style="font-size:10px;color:var(--text3);margin-top:2px">↳ ${fmtD(g.inc)}</div>` : '';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><span class="mono">${g.nom}</span>${incH}</td>
+      <td><span class="tag ${tc}">${g.taux}%</span></td>
+      <td><div class="pw">${ttH}</div></td>
+      <td><div class="pw">${cgH}</div></td>
+      <td><div class="pw">${abH}</div></td>
+      <td style="text-align:center"><span style="color:var(--ink);font-weight:600;font-family:'JetBrains Mono',monospace">${g.pm}</span></td>
+      <td style="text-align:center"><span style="color:var(--teal);font-weight:600;font-family:'JetBrains Mono',monospace">${g.bm}</span></td>
+      <td>
+        <div class="row" style="gap:6px;justify-content:flex-end">
+          <button class="btn bgh" onclick="openEdit(${g.id})" style="padding:5px 10px;font-size:10px">Modifier</button>
+          <button class="btn bred" onclick="delG(${g.id})" style="padding:5px 10px;font-size:10px">✕</button>
+        </div>
+      </td>`;
+    tb.appendChild(tr);
+  });
+}
+
+function openAdd() {
+  editId=null; tempAbs=[];
+  document.getElementById('mtitle').textContent='Ajouter un gestionnaire';
+  document.getElementById('fNom').value='';
+  document.getElementById('fTaux').value='100';
+  document.getElementById('fIncorp').value='';
+  document.getElementById('fPermMan').value='0';
+  document.getElementById('fBuMan').value='0';
+  document.querySelectorAll('#fTT .cbi').forEach(e=>e.classList.remove('sel-tt'));
+  document.querySelectorAll('#fCG .cbi').forEach(e=>e.classList.remove('sel-cg'));
+  renderAbs();
+  document.getElementById('gmodal').classList.add('on');
+}
+
+function openEdit(id) {
+  editId=id;
+  const g=G.find(x=>x.id===id);
+  tempAbs=g.abs.map(a=>({...a}));
+  document.getElementById('mtitle').textContent=`Modifier — ${g.nom}`;
+  document.getElementById('fNom').value=g.nom;
+  document.getElementById('fTaux').value=g.taux;
+  document.getElementById('fIncorp').value=g.inc||'';
+  document.getElementById('fPermMan').value=g.pm;
+  document.getElementById('fBuMan').value=g.bm;
+  setCb('fTT',g.tt,'sel-tt');
+  setCb('fCG',g.cg,'sel-cg');
+  renderAbs();
+  document.getElementById('gmodal').classList.add('on');
+}
+
+function closeModal() { document.getElementById('gmodal').classList.remove('on'); }
+
+function addAbs() {
+  const deb=document.getElementById('fAbsDeb').value;
+  const fin=document.getElementById('fAbsFin').value;
+  const type=document.getElementById('fAbsType').value;
+  if(!deb||!fin){toast('⚠ Saisir les deux dates');return;}
+  if(deb>fin){toast('⚠ Date début > fin');return;}
+  tempAbs.push({deb,fin,type});
+  document.getElementById('fAbsDeb').value='';
+  document.getElementById('fAbsFin').value='';
+  renderAbs();
+}
+function renderAbs() {
+  document.getElementById('abslist').innerHTML = tempAbs.map((a,i)=>`
+    <div class="absitem">
+      <span style="color:var(--red);margin-right:4px">●</span>
+      <strong>${a.type}</strong>&nbsp;&nbsp;${fmtD(a.deb)} → ${fmtD(a.fin)}
+      <button class="adel" onclick="delAbs(${i})">✕</button>
+    </div>`).join('');
+}
+function delAbs(i){ tempAbs.splice(i,1); renderAbs(); }
+
+function saveGest() {
+  const nom=document.getElementById('fNom').value.trim().toUpperCase();
+  if(!nom){toast('⚠ Nom requis');return;}
+  const tt=getCb('fTT','sel-tt');
+  const cg=getCb('fCG','sel-cg');
+  const taux=parseInt(document.getElementById('fTaux').value);
+  const inc=document.getElementById('fIncorp').value||null;
+  const pm=parseFloat(document.getElementById('fPermMan').value)||0;
+  const bm=parseFloat(document.getElementById('fBuMan').value)||0;
+  if(editId) {
+    Object.assign(G.find(x=>x.id===editId), {nom,taux,tt,cg,abs:[...tempAbs],inc,pm,bm});
+  } else {
+    if(G.find(x=>x.nom===nom)){toast('⚠ Ce nom existe déjà');return;}
+    G.push({id:Date.now(),nom,taux,tt,cg,abs:[...tempAbs],inc,pm,bm});
+  }
+  closeModal(); renderG(); saveToServer(); toast('✓ Gestionnaire enregistré');
+}
+function delG(id) {
+  if(!confirm('Supprimer ce gestionnaire ?'))return;
+  G=G.filter(g=>g.id!==id); renderG(); saveToServer(); toast('Gestionnaire supprimé');
+}
+
+// ═══════════════════════════════════════════
+// JOURS FÉRIÉS
+// ═══════════════════════════════════════════
+function renderF() {
+  const tb = document.getElementById('ftbody');
+  const sorted = [...FERIES].sort((a,b)=>a.date.localeCompare(b.date));
+  tb.innerHTML = sorted.length ? sorted.map(f=>{
+    const dt=new Date(f.date+'T12:00:00');
+    return `<tr>
+      <td><span class="mono">${fmtD(f.date)}</span></td>
+      <td><span class="tag tfer">${JNAMES[dt.getDay()]}</span></td>
+      <td>${f.label}</td>
+      <td style="text-align:right">
+        <button class="btn bred" onclick="delFerie('${f.date}')" style="padding:4px 9px;font-size:10px">✕</button>
+      </td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="4" style="color:var(--text3);text-align:center;padding:24px">Aucun jour férié</td></tr>`;
+}
+function addFerie() {
+  const date=document.getElementById('fNewDate').value;
+  const label=document.getElementById('fNewLabel').value.trim();
+  if(!date){toast('⚠ Date requise');return;}
+  if(FERIES.find(f=>f.date===date)){toast('⚠ Date déjà enregistrée');return;}
+  FERIES.push({date,label:label||'Jour férié'});
+  document.getElementById('fNewDate').value='';
+  document.getElementById('fNewLabel').value='';
+  renderF(); saveToServer(); toast('✓ Jour férié ajouté');
+}
+function delFerie(date){ FERIES=FERIES.filter(f=>f.date!==date); renderF(); saveToServer(); toast('Jour férié supprimé'); }
+
+// ═══════════════════════════════════════════
+// STATISTIQUES
+// ═══════════════════════════════════════════
+function renderStat() {
+  const now=new Date();
+  document.getElementById('updtxt').textContent =
+    `${now.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})} à ${now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}`;
+
+  const tot={};
+  G.forEach(g=>{tot[g.nom]={p:g.pm,b:g.bm};});
+  const vm=Object.keys(ARC).filter(k=>ARC[k].validated).sort();
+  vm.forEach(k=>{
+    G.forEach(g=>{
+      if(!tot[g.nom])return;
+      tot[g.nom].p+=(ARC[k].perm?.[g.nom])||0;
+      tot[g.nom].b+=(ARC[k].bu?.[g.nom])||0;
+    });
+  });
+  const tp=Object.values(tot).reduce((s,v)=>s+v.p,0);
+  const tb=Object.values(tot).reduce((s,v)=>s+v.b,0);
+
+  document.getElementById('kgrid').innerHTML=`
+    <div class="kpi"><div class="kval">${G.length}</div><div class="klbl">Gestionnaires</div></div>
+    <div class="kpi"><div class="kval">${tp}</div><div class="klbl">Permanences totales</div></div>
+    <div class="kpi kteal"><div class="kval">${tb}</div><div class="klbl">Back-Up totaux</div></div>
+    <div class="kpi kamb"><div class="kval">${vm.length}</div><div class="klbl">Mois validés</div></div>`;
+
+  const tbl=document.getElementById('stattbl');
+  let h='<thead><tr><th rowspan="2" style="text-align:left;padding-left:14px;min-width:80px">Gestionnaire</th>';
+  vm.forEach(k=>{const[y,m]=k.split('-');h+=`<th colspan="2" class="mh">${MOIS[parseInt(m)-1].substring(0,4)} ${y}</th>`;});
+  h+='<th colspan="2" class="th">Total</th></tr><tr>';
+  vm.forEach(()=>{h+='<th style="font-size:9px">Perm</th><th style="font-size:9px">BU</th>';});
+  h+='<th style="font-size:9px">Perm</th><th style="font-size:9px">BU</th></tr></thead><tbody>';
+  G.forEach(g=>{
+    h+=`<tr><td class="gn">${g.nom}<br><span style="color:var(--text3);font-size:10px;font-weight:400">${g.taux}%</span></td>`;
+    vm.forEach(k=>{
+      const p=(ARC[k].perm?.[g.nom])||0, b=(ARC[k].bu?.[g.nom])||0;
+      h+=`<td class="pv">${p||'—'}</td><td class="bv">${b||'—'}</td>`;
+    });
+    h+=`<td class="pv"><strong>${tot[g.nom]?.p||0}</strong></td><td class="bv"><strong>${tot[g.nom]?.b||0}</strong></td></tr>`;
+  });
+  const sm={},sb={};
+  vm.forEach(k=>{sm[k]=0;sb[k]=0;G.forEach(g=>{sm[k]+=(ARC[k].perm?.[g.nom])||0;sb[k]+=(ARC[k].bu?.[g.nom])||0;});});
+  h+='<tr class="tot"><td class="gn" style="font-family:Fraunces,serif;font-size:12px">TOTAL</td>';
+  vm.forEach(k=>{h+=`<td><strong>${sm[k]}</strong></td><td><strong>${sb[k]}</strong></td>`;});
+  h+=`<td><strong>${tp}</strong></td><td><strong>${tb}</strong></td></tr></tbody>`;
+  tbl.innerHTML=h;
+}
+
+// ═══════════════════════════════════════════
+// GÉNÉRATION DU TABLEAU
+// Règles :
+//  1. Perm : jamais un TT ce jour
+//  2. BU : jamais le même que perm ce jour ; non-TT PRIORITAIRES ; TT seulement dernier recours
+//  3. Passe 1 = toutes les perm, Passe 2 = tous les BU
+//  4. Recalcul auto des jours futurs après modification manuelle
+// ═══════════════════════════════════════════
+function genTable() {
+  const month=parseInt(document.getElementById('selM').value);
+  const year=parseInt(document.getElementById('selY').value);
+  const key=`${year}-${p2(month+1)}`;
+  const td=buildMonth(year,month);
+  preview={key,month,year,tableData:td};
+  renderTbl(td,year,month,'preview',false);
+  document.getElementById('btnVal').style.display='inline-flex';
+  document.getElementById('btnPrt').style.display='inline-flex';
+}
+
+function buildMonth(year,month) {
+  const dim=new Date(year,month+1,0).getDate(), fs=fSet(), days=[];
+  for(let d=1;d<=dim;d++){
+    const dt=new Date(year,month,d), dow=dt.getDay();
+    if(dow>=1&&dow<=5){ const s=ds(dt); days.push({date:dt,dateStr:s,dow,ferie:fs.has(s)}); }
+  }
+  const weeks=[]; let cw=[];
+  days.forEach(day=>{ if(cw.length&&day.dow===1){weeks.push(cw);cw=[];} cw.push(day); });
+  if(cw.length) weeks.push(cw);
+
+  // ── Compteurs ANNUELS : équité mesurée sur toute l'année ──
+  // On part des totaux YTD : manuels + archives validées de la même année,
+  // en excluant le mois en cours (pour ne pas biaiser la distribution).
+  const curKey=`${year}-${p2(month+1)}`;
+  const pc={},bc={};
+  G.forEach(g=>{
+    // Base = saisie manuelle YTD du gestionnaire
+    pc[g.nom]=g.pm*0.5; // convertir en demi-créneaux pour cohérence avec +=0.5
+    bc[g.nom]=g.bm*0.5;
+  });
+  // Ajouter les archives validées de la même année (hors mois courant)
+  Object.keys(ARC).filter(k=>{
+    const [y]=k.split('-');
+    return parseInt(y)===year && k!==curKey && ARC[k].validated;
+  }).forEach(k=>{
+    const ar=ARC[k];
+    G.forEach(g=>{
+      if(pc[g.nom]===undefined) return;
+      // Les archives stockent des entiers (1 par créneau) → diviser par 2 pour demi-créneaux
+      pc[g.nom]+=(ar.perm?.[g.nom]||0)*0.5;
+      bc[g.nom]+=(ar.bu?.[g.nom]||0)*0.5;
+    });
+  });
+  const asgn={};
+
+  // ══════════════════════════════════════════════════
+  // PASSE 1 : PERMANENCES — strictement 1 par semaine
+  // ══════════════════════════════════════════════════
+  // Principe : chaque semaine, chaque gestionnaire ne peut faire qu'UNE perm (matin OU apm).
+  // Le tri par ratio normalisé assure l'équité sur le mois.
+  // Si un gestionnaire est déjà assigné cette semaine → exclu strictement.
+  weeks.forEach(week=>{
+    const wdDays=week.filter(d=>!d.ferie);
+    const wPermDone=new Set(); // gestionnaires ayant déjà leur perm cette semaine
+    wdDays.forEach(day=>{
+      const j=JOURS[day.dow-1];
+      // Perm matin : pool strict (1/semaine) → fallback si vide (vacances/absences)
+      let poolPm=G.filter(g=>canPerm(g,j,day.dateStr,'m')&&!wPermDone.has(g.nom));
+      if(!poolPm.length) poolPm=G.filter(g=>canPerm(g,j,day.dateStr,'m'));
+      const pm=bestP(poolPm,pc,[]);
+
+      // Perm apm : même logique, exclure aussi le gestionnaire du matin
+      let poolPa=G.filter(g=>canPerm(g,j,day.dateStr,'a')&&!wPermDone.has(g.nom));
+      if(!poolPa.length) poolPa=G.filter(g=>canPerm(g,j,day.dateStr,'a'));
+      const pa=bestP(poolPa,pc,[pm]);
+
+      if(pm){ pc[pm.nom]+=0.5; wPermDone.add(pm.nom); }
+      if(pa){ pc[pa.nom]+=0.5; wPermDone.add(pa.nom); }
+      asgn[day.dateStr]={pm:pm?.nom||'N/A',pa:pa?.nom||'N/A',bm:null,ba:null,bmTT:false,baTT:false,ferie:false};
+    });
+  });
+
+  // Jours fériés
+  days.filter(d=>d.ferie).forEach(day=>{ asgn[day.dateStr]={ferie:true}; });
+
+  // ══════════════════════════════════════════════════
+  // PASSE 2 : BACK-UPS — strictement 1 par semaine
+  // ══════════════════════════════════════════════════
+  // Règles cumulées :
+  //   a) Strictement 1 BU par gestionnaire par semaine
+  //   b) Jamais le même gestionnaire que perm ce jour
+  //   c) Non-TT prioritaires (bestBU)
+  //   d) Fallback anti-N/A : si le pool strict est vide (ex: semaine courte, beaucoup d'absents),
+  //      on lève la contrainte hebdomadaire UNIQUEMENT pour remplir la cellule
+  weeks.forEach(week=>{
+    const wdDays=week.filter(d=>!d.ferie);
+    const wBUDone=new Set(); // gestionnaires ayant déjà leur BU cette semaine
+    wdDays.forEach(day=>{
+      const j=JOURS[day.dow-1];
+      const a=asgn[day.dateStr];
+      const usedToday=[a.pm,a.pa].filter(n=>n&&n!=='N/A');
+
+      // BU matin — pool strict d'abord
+      let poolBm=G.filter(g=>canBU(g,j,day.dateStr,'m')&&!usedToday.includes(g.nom)&&!wBUDone.has(g.nom));
+      // Fallback si pool vide : lever la contrainte semaine (mais garder les autres)
+      if(!poolBm.length) poolBm=G.filter(g=>canBU(g,j,day.dateStr,'m')&&!usedToday.includes(g.nom));
+      const bm=bestBU(poolBm,bc,[],j);
+
+      // BU apm — pool strict d'abord (exclure aussi BU matin)
+      const bmNom=bm?.nom;
+      let poolBa=G.filter(g=>canBU(g,j,day.dateStr,'a')&&!usedToday.includes(g.nom)&&g.nom!==bmNom&&!wBUDone.has(g.nom));
+      if(!poolBa.length) poolBa=G.filter(g=>canBU(g,j,day.dateStr,'a')&&!usedToday.includes(g.nom)&&g.nom!==bmNom);
+      const ba=bestBU(poolBa,bc,[bm],j);
+
+      if(bm){ bc[bm.nom]+=0.5; wBUDone.add(bm.nom); }
+      if(ba){ bc[ba.nom]+=0.5; wBUDone.add(ba.nom); }
+      a.bm=bm?.nom||'N/A'; a.ba=ba?.nom||'N/A';
+      a.bmTT=!!(bm&&bm.tt.includes(j));
+      a.baTT=!!(ba&&ba.tt.includes(j));
+    });
+  });
+
+  return {weeks,assignments:asgn};
+}
+
+// Peut assurer une permanence : pas TT ce jour, pas absent, pas en congé
+function canPerm(g,j,s,h){
+  if(g.tt.includes(j)) return false;
+  if(absent(g,s)) return false;
+  if(conge(g,j,h)) return false;
+  return true;
+}
+// Peut assurer un BU : pas absent, pas en congé (TT autorisé mais dépriorisé)
+function canBU(g,j,s,h){
+  if(absent(g,s)) return false;
+  if(conge(g,j,h)) return false;
+  return true;
+}
+function absent(g,s){ return g.abs.some(a=>s>=a.deb&&s<=a.fin); }
+function conge(g,j,h){
+  if(g.cg.includes(j)) return true;
+  const sfx=h==='m'?'matin':'après-midi';
+  return g.cg.some(c=>c===`${j} ${sfx}`);
+}
+
+// Ratio de charge normalisé : count / (taux/100)
+// Un 80% avec 8 perm = ratio 10 = même charge qu'un 100% avec 10 perm
+// Celui dont le ratio est le plus bas passe en premier → équité proportionnelle au taux
+function ratio(g, counts){ return counts[g.nom] / (g.taux / 100); }
+
+// Tri pour permanences : ratio normalisé le plus bas d'abord
+function bestP(pool,counts,excl){
+  const en=(excl||[]).filter(Boolean).map(x=>x?.nom||x);
+  const av=pool.filter(g=>!en.includes(g.nom));
+  if(!av.length) return null;
+  av.sort((a,b)=>{
+    const d=ratio(a,counts)-ratio(b,counts);
+    // En cas d'égalité parfaite : taux décroissant (100% avant 80% avant 50%)
+    return d!==0 ? d : b.taux-a.taux;
+  });
+  return av[0];
+}
+
+// Tri pour BU : NON-TT prioritaires ; à l'intérieur de chaque groupe : ratio normalisé le plus bas
+function bestBU(pool,counts,excl,jourNom){
+  const en=(excl||[]).filter(Boolean).map(x=>x?.nom||x);
+  const av=pool.filter(g=>!en.includes(g.nom));
+  if(!av.length) return null;
+  const srt=(a,b)=>{
+    const d=ratio(a,counts)-ratio(b,counts);
+    return d!==0 ? d : b.taux-a.taux;
+  };
+  const nonTT=av.filter(g=>!g.tt.includes(jourNom)).sort(srt);
+  const ttOnly=av.filter(g=>g.tt.includes(jourNom)).sort(srt);
+  return nonTT.length ? nonTT[0] : (ttOnly.length ? ttOnly[0] : null);
+}
+
+// ═══════════════════════════════════════════
+// RENDU DU TABLEAU
+// ═══════════════════════════════════════════
+function renderTbl(td,year,month,cid,isArch){
+  const {weeks,assignments}=td;
+  // Réhydrater les objets Date après désérialisation JSON (MongoDB)
+  weeks.forEach(week=>week.forEach(day=>{
+    if(day.date && !(day.date instanceof Date)) day.date=new Date(day.date);
+  }));
+  const key=`${year}-${p2(month+1)}`;
+  const isVal=ARC[key]?.validated;
+  const tod=today();
+  const now=new Date();
+  const isCurM=(year===now.getFullYear()&&month===now.getMonth());
+
+  let h=`<div class="cflat" style="margin-bottom:16px">
+    <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px">
+      <span style="font-family:'Fraunces',serif;font-weight:600;font-size:15px">${MOIS[month]} ${year}</span>
+      ${isVal?`<span class="badge bok">✓ Validé</span>`:`<span class="badge bpend">Aperçu</span>`}
+      ${isArch&&isCurM?`<span style="font-size:11px;color:var(--ink);margin-left:4px">— jours présents/futurs modifiables</span>`:''}
+    </div>
+    <div class="pwrap" style="padding:20px"><table class="ptbl">`;
+
+  const rows=[
+    {f:'pm',lbl:'Perm. 9h00 → 12h30',  cls:'cpm',lclr:''},
+    {f:'pa',lbl:'Perm. 12h30 → 16h00', cls:'cpa',lclr:''},
+    null,
+    {f:'bm',lbl:'BU 9h00 → 12h00',     cls:'cbu',lclr:'color:var(--teal)'},
+    {f:'ba',lbl:'BU 13h30 → 16h00',    cls:'cbu',lclr:'color:var(--teal)'},
+  ];
+
+  weeks.forEach((week,wi)=>{
+    h+=`<thead><tr><th style="text-align:right;min-width:130px;font-size:9px">Semaine ${wi+1}</th>`;
+    week.forEach(day=>{
+      const j=JOURS[day.dow-1];
+      const isT=day.dateStr===tod;
+      h+=`<th style="${isT?'outline:2px solid #c9a84c;outline-offset:-2px':''}">
+        <div style="font-size:9px;opacity:.7">${j.substring(0,3).toUpperCase()}</div>
+        <div style="font-size:15px;font-weight:700">${day.date.getDate()}</div>
+        ${isT?`<div style="font-size:8px;opacity:.7">Auj.</div>`:''}
+      </th>`;
+    });
+    h+=`</tr></thead><tbody>`;
+
+    rows.forEach(row=>{
+      if(row===null){h+=`<tr class="sepr"><td colspan="${week.length+1}"></td></tr>`;return;}
+      h+=`<tr><td class="lcell" style="${row.lclr}">${row.lbl}</td>`;
+      week.forEach(day=>{
+        const a=assignments[day.dateStr];
+        if(a.ferie){
+          // Toute la cellule TD en gris sombre
+          h+=`<td style="background:#555b6e;padding:0"><div class="pc" style="background:#555b6e;color:#fff;font-size:9px;font-weight:700;letter-spacing:.04em;padding:8px 5px">${row.f==='pm'?'FÉRIÉ':''}</div></td>`;
+          return;
+        }
+        const val=(row.f==='pm'?a.pm:row.f==='pa'?a.pa:row.f==='bm'?a.bm:a.ba)||'N/A';
+        const isTT=(row.f==='bm'&&a.bmTT)||(row.f==='ba'&&a.baTT);
+        const cls=isTT?'cbuf':row.cls;
+        const isPast=day.dateStr<tod;
+        const lockKey=`${key}|${day.dateStr}|${row.f}`;
+        const isLocked=LOCKED.has(lockKey);
+        let edAttr,icons;
+        if(isPast){
+          edAttr=`past" title="Jour passé — non modifiable`;
+          h+=`<td><div class="pc ${cls} ${edAttr}" style="opacity:.75">${val}${isTT?' ⚠':''}</div></td>`;
+        } else if(isLocked){
+          edAttr=`locked" title="Cellule verrouillée — double-clic pour déverrouiller" ondblclick="toggleLock(event,'${key}','${day.dateStr}','${row.f}')"`;
+          h+=`<td style="position:relative"><div class="pc ${cls} ${edAttr}" style="border:2px solid rgba(184,110,26,.5);border-radius:3px">${val}${isTT?' ⚠':''}<br><span style="font-size:8px;opacity:.7;display:block;line-height:1;margin-top:1px">🔒 verrou</span></div></td>`;
+        } else {
+          edAttr=`ed" onclick="handleCellClick(event,'${key}','${day.dateStr}','${row.f}',this)" title="Clic = modifier · Double-clic = verrouiller"`;
+          h+=`<td><div class="pc ${cls} ${edAttr}">${val}${isTT?' ⚠':''}</div></td>`;
+        }
+      });
+      h+=`</tr>`;
+    });
+
+    if(wi<weeks.length-1) h+=`<tr><td colspan="${week.length+1}" style="height:16px;background:var(--bg);border:none"></td></tr>`;
+    h+=`</tbody>`;
+  });
+  h+=`</table></div></div>`;
+  document.getElementById(cid).innerHTML=h;
+}
+
+// ═══════════════════════════════════════════
+// CELL PICKER
+// ═══════════════════════════════════════════
+
+// Timer pour distinguer simple clic (ouvrir picker) et double-clic (verrouiller)
+let _clickTimer=null;
+function handleCellClick(event,key,dateStr,field,el){
+  event.stopPropagation();
+  // Capturer le rect MAINTENANT pendant que l'event est vivant
+  const rect=el.getBoundingClientRect();
+  if(_clickTimer){
+    clearTimeout(_clickTimer);
+    _clickTimer=null;
+    toggleLock(event,key,dateStr,field);
+  } else {
+    _clickTimer=setTimeout(()=>{
+      _clickTimer=null;
+      openPick(key,dateStr,field,rect);
+    },250);
+  }
+}
+
+function openPick(key,dateStr,field,rect){
+  const p=document.getElementById('cpick');
+  p.style.display='none'; p.innerHTML='';
+
+  const a=getA(key,dateStr);
+  if(!a||a.ferie) return;
+
+  const dt=new Date(dateStr+'T12:00:00');
+  const j=JOURS[dt.getDay()-1];
+  const half=(field==='pm'||field==='bm')?'m':'a';
+  const isPerm=(field==='pm'||field==='pa');
+
+  // Noms déjà utilisés CE jour (hors champ en cours)
+  const usedToday=[a.pm,a.pa,a.bm,a.ba].filter(n=>n&&n!=='N/A'&&n!==a[field]);
+
+  // Option vide
+  const naDiv=document.createElement('div');
+  naDiv.className='cpi'; naDiv.innerHTML=`<span style="color:var(--text2)">— N/A (vide)</span>`;
+  naDiv.onclick=()=>{ setCell(key,dateStr,field,'N/A'); p.style.display='none'; };
+  p.appendChild(naDiv);
+
+  const sep=document.createElement('div'); sep.className='cpsep'; p.appendChild(sep);
+
+  G.forEach(g=>{
+    const item=document.createElement('div'); item.className='cpi';
+    const blocked=usedToday.includes(g.nom);
+    // Construire toutes les notes applicables (peuvent se cumuler)
+    const notes=[];
+    if(g.tt.includes(j)) notes.push(isPerm?'TT — pas de perm':'TT');
+    if(conge(g,j,half)) notes.push('congé');
+    if(absent(g,dateStr)) notes.push('absent');
+    if(blocked) notes.push('déjà assigné');
+    const note=notes.join(' · ');
+    item.innerHTML=`<span class="mono" style="font-size:12px">${g.nom}</span><span class="cpisub">${g.taux}%${note?' — '+note:''}</span>`;
+    if(blocked) item.classList.add('dis');
+    else item.onclick=()=>{ setCell(key,dateStr,field,g.nom); p.style.display='none'; };
+    p.appendChild(item);
+  });
+
+  // Positionnement — rect capturé au moment du clic (position:fixed, pas de scrollY)
+  p.style.visibility='hidden';
+  p.style.display='block';
+  p.style.maxHeight='260px';
+  requestAnimationFrame(()=>{
+    const ph=p.offsetHeight;
+    const pw=p.offsetWidth||200;
+    const spaceBelow=window.innerHeight-rect.bottom-8;
+    const spaceAbove=rect.top-8;
+    if(spaceBelow>=ph||spaceBelow>=spaceAbove){
+      p.style.top=(rect.bottom+4)+'px';
+    } else {
+      p.style.top=Math.max(4,rect.top-ph-4)+'px';
+    }
+    let left=rect.left;
+    if(left+pw>window.innerWidth-8) left=window.innerWidth-pw-8;
+    if(left<4) left=4;
+    p.style.left=left+'px';
+    p.style.visibility='visible';
+  });
+}
+
+function getA(key,dateStr){
+  if(ARC[key]) return ARC[key].tableData.assignments[dateStr];
+  if(preview&&preview.key===key) return preview.tableData.assignments[dateStr];
+  return null;
+}
+
+// ─── VERROUS ───
+// Clé = "tableKey|dateStr|field" → la cellule est protégée des recalculs automatiques
+// (déclaré en haut du script pour éviter les erreurs d'initialisation)
+
+function toggleLock(event,key,dateStr,field){
+  event.stopPropagation();
+  const lk=`${key}|${dateStr}|${field}`;
+  if(LOCKED.has(lk)){
+    LOCKED.delete(lk);
+    toast('🔓 Cellule déverrouillée');
+  } else {
+    LOCKED.add(lk);
+    toast('🔒 Cellule verrouillée — les recalculs ne l\'affecteront plus');
+  }
+  // Re-render pour mettre à jour les icônes
+  if(ARC[key]){
+    const ar=ARC[key],[y,m]=key.split('-');
+    renderTbl(ar.tableData,parseInt(y),parseInt(m)-1,`ac-${key}`,true);
+    appendArchButtons(key);
+  } else if(preview&&preview.key===key){
+    renderTbl(preview.tableData,preview.year,preview.month,'preview',false);
+  }
+}
+
+// ─── VUE ÉQUIPE ───
+function openTeamView(){
+  // Trouver le mois courant ou le plus récent
+  const now=new Date();
+  const curKey=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+
+  // Chercher le tableau du mois courant (preview ou archive)
+  let td=null, month=now.getMonth(), year=now.getFullYear(), label='', validated=false;
+
+  if(preview&&preview.key===curKey){
+    td=preview.tableData; month=preview.month; year=preview.year;
+    label=`${MOIS[month]} ${year}`; validated=false;
+  } else if(ARC[curKey]){
+    td=ARC[curKey].tableData; month=ARC[curKey].month; year=ARC[curKey].year;
+    label=`${MOIS[month]} ${year}`; validated=ARC[curKey].validated;
+  } else {
+    // Prendre le plus récent archivé
+    const keys=Object.keys(ARC).sort().reverse();
+    if(keys.length){
+      const k=keys[0]; const ar=ARC[k];
+      const [y,m]=k.split('-');
+      td=ar.tableData; month=parseInt(m)-1; year=parseInt(y);
+      label=`${MOIS[month]} ${year}`; validated=ar.validated;
+    }
+  }
+
+  if(!td){toast('⚠ Aucun planning disponible');return;}
+
+  document.getElementById('tvTitle').textContent=`Planning — ${label}`;
+  document.getElementById('tvSub').textContent=`${validated?'✓ Validé':'Aperçu'} · Vue lecture seule`;
+
+  // Construire le tableau en lecture seule (sans boutons d'édition)
+  const {weeks,assignments}=td;
+  const tod=today();
+  const rows=[
+    {f:'pm',lbl:'Perm. 9h00 → 12h30',  cls:'cpm',lclr:''},
+    {f:'pa',lbl:'Perm. 12h30 → 16h00', cls:'cpa',lclr:''},
+    null,
+    {f:'bm',lbl:'BU 9h00 → 12h00',     cls:'cbu',lclr:'color:var(--teal)'},
+    {f:'ba',lbl:'BU 13h30 → 16h00',    cls:'cbu',lclr:'color:var(--teal)'},
+  ];
+
+  let h=`<div class="pwrap"><table class="ptbl">`;
+  weeks.forEach((week,wi)=>{
+    h+=`<thead><tr><th style="text-align:right;min-width:130px;font-size:9px">Semaine ${wi+1}</th>`;
+    week.forEach(day=>{
+      const j=JOURS[day.dow-1];
+      const isT=day.dateStr===tod;
+      h+=`<th style="${isT?'outline:2px solid #c9a84c;outline-offset:-2px':''}">
+        <div style="font-size:9px;opacity:.7">${j.substring(0,3).toUpperCase()}</div>
+        <div style="font-size:15px;font-weight:700">${day.date.getDate()}</div>
+        ${isT?'<div style="font-size:8px;opacity:.7">Auj.</div>':''}
+      </th>`;
+    });
+    h+=`</tr></thead><tbody>`;
+    rows.forEach(row=>{
+      if(row===null){h+=`<tr class="sepr"><td colspan="${week.length+1}"></td></tr>`;return;}
+      h+=`<tr><td class="lcell" style="${row.lclr}">${row.lbl}</td>`;
+      week.forEach(day=>{
+        const a=assignments[day.dateStr];
+        if(a.ferie){
+          h+=`<td style="background:#555b6e;padding:0"><div class="pc" style="background:#555b6e;color:#fff;font-size:9px;font-weight:700;padding:8px 5px">${row.f==='pm'?'FÉRIÉ':''}</div></td>`;
+          return;
+        }
+        const val=(row.f==='pm'?a.pm:row.f==='pa'?a.pa:row.f==='bm'?a.bm:a.ba)||'N/A';
+        const isTT=(row.f==='bm'&&a.bmTT)||(row.f==='ba'&&a.baTT);
+        const cls=isTT?'cbuf':row.cls;
+        const isPast=day.dateStr<tod;
+        h+=`<td><div class="pc ${cls}" style="${isPast?'opacity:.65':''}">
+          ${val}${isTT?' ⚠':''}
+        </div></td>`;
+      });
+      h+=`</tr>`;
+    });
+    if(wi<weeks.length-1) h+=`<tr><td colspan="${week.length+1}" style="height:16px;background:var(--bg);border:none"></td></tr>`;
+    h+=`</tbody>`;
+  });
+  h+=`</table></div>`;
+
+  // Légende
+  h+=`<div class="legend" style="margin-top:16px">
+    <div class="li"><div class="ld" style="background:rgba(26,58,92,.15)"></div>Perm. matin 9h–12h30</div>
+    <div class="li"><div class="ld" style="background:rgba(26,58,92,.28)"></div>Perm. après-midi 12h30–16h</div>
+    <div class="li"><div class="ld" style="background:rgba(42,122,110,.2)"></div>Back-Up</div>
+    <div class="li"><div class="ld" style="background:rgba(184,110,26,.25)"></div>Back-Up en TT</div>
+    <div class="li"><div class="ld" style="background:#555b6e"></div>Jour férié</div>
+  </div>`;
+
+  document.getElementById('tvBody').innerHTML=h;
+  document.getElementById('teamView').classList.add('on');
+}
+
+function closeTeamView(){
+  document.getElementById('teamView').classList.remove('on');
+}
+
+// ═══════════════════════════════════════════
+// MODIFICATION MANUELLE + RECALCUL AUTO
+// ═══════════════════════════════════════════
+function setCell(key,dateStr,field,newNom){
+  // Récupérer le tableau concerné
+  let td=null;
+  if(ARC[key])              td=ARC[key].tableData;
+  else if(preview&&preview.key===key) td=preview.tableData;
+  if(!td) return;
+
+  const asgn=td.assignments;
+  const a=asgn[dateStr];
+  if(!a||a.ferie) return;
+
+  // Appliquer la modification
+  a[field]=newNom;
+  if(field==='bm'||field==='ba'){
+    const g=G.find(x=>x.nom===newNom);
+    const j=JOURS[new Date(dateStr+'T12:00:00').getDay()-1];
+    if(field==='bm') a.bmTT=!!(g&&g.tt.includes(j));
+    if(field==='ba') a.baTT=!!(g&&g.tt.includes(j));
+  }
+
+  // Recalculer tous les jours > dateStr et >= aujourd'hui
+  const tod=today();
+  const [yr,mo]=key.split('-').map(Number);
+  const fs=fSet();
+  const allDays=[];
+  for(let d=1;d<=new Date(yr,mo,0).getDate();d++){
+    const dt=new Date(yr,mo-1,d), dow=dt.getDay();
+    if(dow>=1&&dow<=5){ const s=ds(dt); allDays.push({date:dt,dateStr:s,dow,ferie:fs.has(s)}); }
+  }
+
+  // Compteurs ANNUELS : base = manuels + archives validées de la même année (hors mois courant)
+  // + tout ce qui est déjà fixé dans le mois courant jusqu'à dateStr (inclus)
+  const pc={},bc={};
+  G.forEach(g=>{
+    pc[g.nom]=g.pm*0.5;
+    bc[g.nom]=g.bm*0.5;
+  });
+  // Archives validées de la même année, hors mois courant
+  Object.keys(ARC).filter(k=>{
+    const [y]=k.split('-');
+    return parseInt(y)===yr && k!==key && ARC[k].validated;
+  }).forEach(k=>{
+    const ar=ARC[k];
+    G.forEach(g=>{
+      if(pc[g.nom]===undefined) return;
+      pc[g.nom]+=(ar.perm?.[g.nom]||0)*0.5;
+      bc[g.nom]+=(ar.bu?.[g.nom]||0)*0.5;
+    });
+  });
+  // Ajouter les jours déjà fixés dans le mois courant jusqu'à dateStr inclus
+  allDays.filter(d=>d.dateStr<=dateStr&&!d.ferie).forEach(day=>{
+    const a2=asgn[day.dateStr];
+    if(!a2||a2.ferie) return;
+    [a2.pm,a2.pa].forEach(n=>{if(n&&n!=='N/A'&&pc[n]!==undefined) pc[n]+=0.5;});
+    [a2.bm,a2.ba].forEach(n=>{if(n&&n!=='N/A'&&bc[n]!==undefined) bc[n]+=0.5;});
+  });
+
+  // Jours futurs à recalculer
+  const future=allDays.filter(d=>d.dateStr>dateStr&&d.dateStr>=tod&&!d.ferie);
+
+  // Grouper les jours futurs par semaine ISO pour appliquer la contrainte hebdomadaire
+  // On détermine la semaine de chaque jour par son lundi
+  function getMondayStr(d){ const dt=new Date(d+'T12:00:00'); const day=dt.getDay(); const diff=dt.getDate()-day+(day===0?-6:1); return ds(new Date(dt.setDate(diff))); }
+
+  // Construire les semaines futures
+  const futWeeks=[];
+  let curW=null, curKey=null;
+  future.forEach(day=>{
+    const wk=getMondayStr(day.dateStr);
+    if(wk!==curKey){ if(curW) futWeeks.push(curW); curW=[]; curKey=wk; }
+    curW.push(day);
+  });
+  if(curW&&curW.length) futWeeks.push(curW);
+
+  // Pour la semaine partielle contenant dateStr, récupérer qui a déjà fait perm/BU
+  // (jours passés dans cette même semaine, y compris dateStr)
+  function getWeekUsed(mondayStr, asgn2, type){
+    const used={};
+    allDays.filter(d=>getMondayStr(d.dateStr)===mondayStr&&d.dateStr<=dateStr&&!d.ferie).forEach(d=>{
+      const a2=asgn2[d.dateStr]; if(!a2||a2.ferie) return;
+      if(type==='p') [a2.pm,a2.pa].forEach(n=>{if(n&&n!=='N/A') used[n]=true;});
+      else           [a2.bm,a2.ba].forEach(n=>{if(n&&n!=='N/A') used[n]=true;});
+    });
+    return used;
+  }
+
+  // Passe 1 : permanences futures — strictement 1/semaine + ratio proportionnel + verrous
+  futWeeks.forEach(week=>{
+    const mondayStr=getMondayStr(week[0].dateStr);
+    const wPermDone=new Set();
+    // Récupérer les gestionnaires ayant déjà fait perm cette semaine (jours passés)
+    allDays.filter(d=>getMondayStr(d.dateStr)===mondayStr&&d.dateStr<=dateStr&&!d.ferie).forEach(d=>{
+      const a2=asgn[d.dateStr]; if(!a2||a2.ferie) return;
+      [a2.pm,a2.pa].forEach(n=>{ if(n&&n!=='N/A') wPermDone.add(n); });
+    });
+    week.forEach(day=>{
+      const j=JOURS[day.dow-1];
+      const pmLocked=LOCKED.has(`${key}|${day.dateStr}|pm`);
+      const paLocked=LOCKED.has(`${key}|${day.dateStr}|pa`);
+      const prevPm=asgn[day.dateStr]?.pm;
+      const prevPa=asgn[day.dateStr]?.pa;
+      if(pmLocked&&paLocked){
+        if(!asgn[day.dateStr]) asgn[day.dateStr]={pm:prevPm||'N/A',pa:prevPa||'N/A',bm:'N/A',ba:'N/A',bmTT:false,baTT:false,ferie:false};
+        if(prevPm&&prevPm!=='N/A'){pc[prevPm]+=0.5;wPermDone.add(prevPm);}
+        if(prevPa&&prevPa!=='N/A'){pc[prevPa]+=0.5;wPermDone.add(prevPa);}
+        return;
+      }
+      const lockedPm=pmLocked&&prevPm&&prevPm!=='N/A'?prevPm:null;
+      const lockedPa=paLocked&&prevPa&&prevPa!=='N/A'?prevPa:null;
+      // Pool strict (1/semaine) → fallback si vide (vacances/absences)
+      let poolPm=G.filter(g=>canPerm(g,j,day.dateStr,'m')&&!wPermDone.has(g.nom));
+      if(!poolPm.length) poolPm=G.filter(g=>canPerm(g,j,day.dateStr,'m'));
+      const pm2=pmLocked?null:bestP(poolPm,pc,[]);
+      let poolPa=G.filter(g=>canPerm(g,j,day.dateStr,'a')&&!wPermDone.has(g.nom));
+      if(!poolPa.length) poolPa=G.filter(g=>canPerm(g,j,day.dateStr,'a'));
+      const pa2=paLocked?null:bestP(poolPa,pc,[pm2]);
+      const finalPm=pmLocked?(lockedPm||'N/A'):(pm2?.nom||'N/A');
+      const finalPa=paLocked?(lockedPa||'N/A'):(pa2?.nom||'N/A');
+      if(!pmLocked&&pm2){pc[pm2.nom]+=0.5;wPermDone.add(pm2.nom);}
+      else if(lockedPm){pc[lockedPm]+=0.5;wPermDone.add(lockedPm);}
+      if(!paLocked&&pa2){pc[pa2.nom]+=0.5;wPermDone.add(pa2.nom);}
+      else if(lockedPa){pc[lockedPa]+=0.5;wPermDone.add(lockedPa);}
+      asgn[day.dateStr]={pm:finalPm,pa:finalPa,bm:'N/A',ba:'N/A',bmTT:false,baTT:false,ferie:false};
+    });
+  });
+
+  // Passe 2 : BU futurs — strictement 1/semaine + fallback anti-N/A + verrous
+  futWeeks.forEach(week=>{
+    const mondayStr=getMondayStr(week[0].dateStr);
+    const wBUDone=new Set();
+    allDays.filter(d=>getMondayStr(d.dateStr)===mondayStr&&d.dateStr<=dateStr&&!d.ferie).forEach(d=>{
+      const a2=asgn[d.dateStr]; if(!a2||a2.ferie) return;
+      [a2.bm,a2.ba].forEach(n=>{ if(n&&n!=='N/A') wBUDone.add(n); });
+    });
+    week.forEach(day=>{
+      const j=JOURS[day.dow-1];
+      const a2=asgn[day.dateStr];
+      const bmLocked=LOCKED.has(`${key}|${day.dateStr}|bm`);
+      const baLocked=LOCKED.has(`${key}|${day.dateStr}|ba`);
+      const usedToday=[a2.pm,a2.pa].filter(n=>n&&n!=='N/A');
+      const lockedBm=bmLocked&&a2.bm&&a2.bm!=='N/A'?a2.bm:null;
+      const lockedBa=baLocked&&a2.ba&&a2.ba!=='N/A'?a2.ba:null;
+      // BU matin — pool strict + fallback
+      let poolBm=G.filter(g=>canBU(g,j,day.dateStr,'m')&&!usedToday.includes(g.nom)&&!wBUDone.has(g.nom));
+      if(!poolBm.length) poolBm=G.filter(g=>canBU(g,j,day.dateStr,'m')&&!usedToday.includes(g.nom));
+      const bm2=bmLocked?null:bestBU(poolBm,bc,[],j);
+      const bmNom=bm2?.nom;
+      // BU apm — pool strict + fallback
+      let poolBa=G.filter(g=>canBU(g,j,day.dateStr,'a')&&!usedToday.includes(g.nom)&&g.nom!==bmNom&&!wBUDone.has(g.nom));
+      if(!poolBa.length) poolBa=G.filter(g=>canBU(g,j,day.dateStr,'a')&&!usedToday.includes(g.nom)&&g.nom!==bmNom);
+      const ba2=baLocked?null:bestBU(poolBa,bc,[bm2],j);
+      const finalBm=bmLocked?(lockedBm||'N/A'):(bm2?.nom||'N/A');
+      const finalBa=baLocked?(lockedBa||'N/A'):(ba2?.nom||'N/A');
+      if(!bmLocked&&bm2){bc[bm2.nom]+=0.5;wBUDone.add(bm2.nom);}
+      else if(lockedBm){bc[lockedBm]+=0.5;wBUDone.add(lockedBm);}
+      if(!baLocked&&ba2){bc[ba2.nom]+=0.5;wBUDone.add(ba2.nom);}
+      else if(lockedBa){bc[lockedBa]+=0.5;wBUDone.add(lockedBa);}
+      a2.bm=finalBm; a2.ba=finalBa;
+      a2.bmTT=!!(G.find(g=>g.nom===finalBm)?.tt.includes(j));
+      a2.baTT=!!(G.find(g=>g.nom===finalBa)?.tt.includes(j));
+    });
+  });
+
+  // Re-render
+  if(ARC[key]){
+    const ar=ARC[key]; const[y,m]=key.split('-');
+    // Si le tableau est validé, recalculer les stats automatiquement
+    if(ar.validated){
+      const {perm,bu}=calcPB(ar.tableData.assignments);
+      ARC[key].perm=perm; ARC[key].bu=bu;
+      renderStat();
+    }
+    renderTbl(ar.tableData,parseInt(y),parseInt(m)-1,`ac-${key}`,true);
+    appendArchButtons(key);
+  } else if(preview&&preview.key===key){
+    renderTbl(preview.tableData,preview.year,preview.month,'preview',false);
+  }
+  saveToServer();
+  toast('✓ Modification appliquée — tableau recalculé');
+}
+
+// ═══════════════════════════════════════════
+// VALIDATION
+// ═══════════════════════════════════════════
+function valTable(){
+  if(!preview) return;
+  const {key,tableData,month,year}=preview;
+  const {perm,bu}=calcPB(tableData.assignments);
+  ARC[key]={tableData,validated:true,perm,bu,month,year};
+  preview=null;
+  // Vider la preview et afficher le tableau validé (badge "Validé" visible)
+  renderTbl(ARC[key].tableData,year,month,'preview',false);
+  document.getElementById('btnVal').style.display='none';
+  document.getElementById('btnPrt').style.display='none';
+  renderStat(); renderArch();
+  saveToServer();
+  toast('✓ Tableau validé — statistiques mises à jour');
+}
+
+function calcPB(asgn){
+  // Chaque créneau (matin OU après-midi) = 1 unité entière
+  // Permet des stats lisibles : 3 créneaux de perm = 3
+  const perm={},bu={};
+  Object.values(asgn).forEach(a=>{
+    if(a.ferie) return;
+    [a.pm,a.pa].forEach(n=>{if(n&&n!=='N/A') perm[n]=(perm[n]||0)+1;});
+    [a.bm,a.ba].forEach(n=>{if(n&&n!=='N/A') bu[n]=(bu[n]||0)+1;});
+  });
+  return {perm,bu};
+}
+
+function recompute(key){
+  if(!ARC[key]) return;
+  const {perm,bu}=calcPB(ARC[key].tableData.assignments);
+  ARC[key].perm=perm; ARC[key].bu=bu;
+  renderStat(); saveToServer(); toast('✓ Stats recalculées');
+}
+
+// ═══════════════════════════════════════════
+// IMPRESSION
+// ═══════════════════════════════════════════
+
+// Construit le HTML d'un tableau mensuel pour impression
+function buildPrintTable(ar, mnom, y){
+  const {weeks,assignments}=ar.tableData;
+  const rows=[
+    {f:'pm',lbl:'Perm.<br>9h00→12h30',  bg:'#dce8f5',fg:'#1a3a5c'},
+    {f:'pa',lbl:'Perm.<br>12h30→16h00', bg:'#b8d0ed',fg:'#1a3a5c'},
+    {f:'__',lbl:'',bg:'',fg:''},
+    {f:'bm',lbl:'BU<br>9h00→12h00',     bg:'#d4ede6',fg:'#1a5c4a'},
+    {f:'ba',lbl:'BU<br>13h30→16h00',    bg:'#d4ede6',fg:'#1a5c4a'},
+  ];
+
+  // En portrait A4, on dispose les semaines VERTICALEMENT :
+  // chaque semaine = un bloc avec les jours en colonnes
+  // les 4-5 semaines s'empilent verticalement sur la page
+  let html='';
+  weeks.forEach((week,wi)=>{
+    html+=`<div class="week-block">`;
+    html+=`<table>`;
+    // En-tête : libellé + jours
+    html+=`<thead><tr><th class="lcell">Sem. ${wi+1}</th>`;
+    week.forEach(day=>{
+      const j=JOURS[day.dow-1];
+      html+=`<th><div class="dname">${j.toUpperCase()}</div><div class="dnum">${day.date.getDate()}</div></th>`;
+    });
+    html+=`</tr></thead><tbody>`;
+    rows.forEach(row=>{
+      if(row.f==='__'){html+=`<tr><td colspan="${week.length+1}" class="sep-row"></td></tr>`;return;}
+      html+=`<tr><td class="lcell">${row.lbl}</td>`;
+      week.forEach(day=>{
+        const a=assignments[day.dateStr];
+        if(a.ferie){
+          html+=`<td class="c-fer">${row.f==='pm'?'FÉRIÉ':''}</td>`;
+          return;
+        }
+        const val=(row.f==='pm'?a.pm:row.f==='pa'?a.pa:row.f==='bm'?a.bm:a.ba)||'N/A';
+        const isTT=(row.f==='bm'&&a.bmTT)||(row.f==='ba'&&a.baTT);
+        const bg=isTT?'#fce8cc':row.bg;
+        const fg=isTT?'#7a3a00':row.fg;
+        html+=`<td style="background:${bg}"><div class="pc" style="color:${fg}">${val}${isTT?' ⚠':''}</div></td>`;
+      });
+      html+=`</tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  });
+  return html;
+}
+
+// CSS commun pour l'impression des plannings
+const PRINT_CSS = `
+@page{size:A4 portrait;margin:10mm 12mm;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#fff;color:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:9pt;}
+h1{font-family:'Fraunces',serif;font-size:13pt;font-weight:700;color:#1a3a5c;margin-bottom:1.5mm;}
+.sub{font-size:7.5pt;color:#666;margin-bottom:4mm;}
+.week-block{margin-bottom:4mm;page-break-inside:avoid;}
+table{width:100%;border-collapse:collapse;table-layout:fixed;}
+th{background:#1a3a5c;color:#fff;padding:4px 3px;font-size:7.5pt;font-weight:600;border:0.5pt solid #2a4a6c;text-align:center;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+td{border:0.5pt solid #ccc;padding:0;text-align:center;vertical-align:middle;}
+.dname{font-size:6.5pt;opacity:.8;letter-spacing:.04em;text-transform:uppercase;}
+.dnum{font-size:12pt;font-weight:800;line-height:1.1;}
+.lcell{background:#f0ede8!important;color:#444;font-size:7pt;font-weight:600;padding:4px 6px;text-align:right;white-space:nowrap;-webkit-print-color-adjust:exact;print-color-adjust:exact;min-width:90pt;}
+.pc{padding:4px 3px;font-family:'JetBrains Mono',monospace;font-size:8pt;font-weight:500;}
+.c-fer{background:#555b6e!important;color:#fff;font-size:7pt;font-weight:700;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.sep-row{height:3px;background:#f0ede8;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page-break{page-break-after:always;}
+.leg{display:flex;gap:10px;flex-wrap:wrap;margin-top:3mm;font-size:6.5pt;color:#555;}
+.li{display:flex;align-items:center;gap:3px;}
+.ld{width:9px;height:9px;border-radius:2px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.month-title{font-family:'Fraunces',serif;font-size:11pt;font-weight:700;color:#1a3a5c;
+  border-bottom:1pt solid #1a3a5c;padding-bottom:2mm;margin-bottom:3mm;margin-top:4mm;}
+`;
+
+const LEGEND_HTML = `
+<div class="leg">
+  <div class="li"><div class="ld" style="background:#dce8f5;border:0.5pt solid #b8d0ed"></div>Perm. matin</div>
+  <div class="li"><div class="ld" style="background:#b8d0ed"></div>Perm. après-midi</div>
+  <div class="li"><div class="ld" style="background:#d4ede6;border:0.5pt solid #a8d4c8"></div>Back-Up</div>
+  <div class="li"><div class="ld" style="background:#fce8cc"></div>Back-Up en TT</div>
+  <div class="li"><div class="ld" style="background:#555b6e"></div>Jour férié</div>
+</div>`;
+
+// Imprimer un seul planning
+function printArch(key){
+  const ar=ARC[key];
+  if(!ar){toast('⚠ Tableau non trouvé');return;}
+  const [y,m]=key.split('-');
+  const mnom=MOIS[parseInt(m)-1];
+  const dateGen=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+  const tbl=buildPrintTable(ar,mnom,y);
+
+  const html=`<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><title>Permanences ${mnom} ${y}</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>${PRINT_CSS}</style>
+</head><body>
+<h1>Planning Permanences & Back-Up — ${mnom} ${y}</h1>
+<div class="sub">Généré le ${dateGen} · ${ar.validated?'✓ Validé':'Non validé'}</div>
+${tbl}${LEGEND_HTML}
+</body></html>`;
+
+  const w=window.open('','_blank','width=800,height=960');
+  w.document.write(html); w.document.close();
+  w.onload=()=>{w.focus();w.print();};
+}
+
+// Imprimer TOUS les plannings archivés (un par page)
+function printAllArch(){
+  const keys=Object.keys(ARC).sort();
+  if(!keys.length){toast('⚠ Aucun tableau archivé');return;}
+  const dateGen=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+
+  let body='';
+  keys.forEach((key,idx)=>{
+    const ar=ARC[key];
+    const [y,m]=key.split('-');
+    const mnom=MOIS[parseInt(m)-1];
+    const tbl=buildPrintTable(ar,mnom,y);
+    // Saut de page entre chaque mois (sauf le dernier)
+    const pb=idx<keys.length-1?'<div class="page-break"></div>':'';
+    body+=`
+<div class="month-title">${mnom} ${y} ${ar.validated?'— ✓ Validé':''}</div>
+<div class="sub" style="margin-top:-2mm">Généré le ${dateGen}</div>
+${tbl}${LEGEND_HTML}${pb}`;
+  });
+
+  const html=`<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><title>Tous les plannings</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>${PRINT_CSS}
+h1{font-size:14pt;margin-bottom:2mm;}
+</style>
+</head><body>
+<h1>Plannings Permanences & Back-Up — ${new Date().getFullYear()}</h1>
+${body}
+</body></html>`;
+
+  const w=window.open('','_blank','width=800,height=960');
+  w.document.write(html); w.document.close();
+  w.onload=()=>{w.focus();w.print();};
+}
+
+function printCurrent(){
+  if(!preview){toast('⚠ Aucun tableau en aperçu');return;}
+  const key=preview.key;
+  const tmp={tableData:preview.tableData,validated:false,perm:{},bu:{},month:preview.month,year:preview.year};
+  const _bak=ARC[key];
+  ARC[key]=tmp;
+  printArch(key);
+  if(_bak===undefined) delete ARC[key]; else ARC[key]=_bak;
+}
+
+// ═══════════════════════════════════════════
+// ARCHIVES
+// ═══════════════════════════════════════════
+function renderArch(){
+  const el=document.getElementById('archlist');
+  const keys=Object.keys(ARC).sort().reverse();
+  if(!keys.length){el.innerHTML=`<div style="color:var(--text3);font-size:12px;padding:4px 0">Aucun tableau archivé.</div>`;return;}
+  const now=new Date();
+  el.innerHTML=keys.map(k=>{
+    const ar=ARC[k],[y,m]=k.split('-');
+    const badge=ar.validated?`<span class="badge bok">✓ Validé</span>`:`<span class="badge bpend">Non validé</span>`;
+    const tp=ar.validated?Object.values(ar.perm||{}).reduce((s,v)=>s+v,0):null;
+    const tb=ar.validated?Object.values(ar.bu||{}).reduce((s,v)=>s+v,0):null;
+    const isCur=(parseInt(y)===now.getFullYear()&&parseInt(m)-1===now.getMonth());
+    return `<div class="aitem">
+      <div class="ahd" onclick="togArch('${k}')">
+        <div class="row" style="gap:10px">
+          <span class="attl">${MOIS[parseInt(m)-1]} ${y}</span>
+          ${isCur?`<span style="font-size:10px;color:var(--ink);font-weight:600">Mois courant</span>`:''}
+        </div>
+        <div class="row" style="gap:10px">
+          ${badge}
+          ${ar.validated?`<span style="font-size:10px;color:var(--text2)">Perm: ${tp} · BU: ${tb}</span>`:''}
+          <button class="btn bgh" onclick="event.stopPropagation();printArch('${k}')" style="padding:4px 10px;font-size:11px">🖨 Imprimer</button>
+          <span style="color:var(--text3);font-size:12px">▾</span>
+        </div>
+      </div>
+      <div class="abd" id="ab-${k}"><div id="ac-${k}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function togArch(k){
+  const bd=document.getElementById(`ab-${k}`);
+  const open=bd.classList.contains('on');
+  document.querySelectorAll('.abd').forEach(b=>b.classList.remove('on'));
+  if(!open){
+    bd.classList.add('on');
+    const ce=document.getElementById(`ac-${k}`);
+    // Toujours re-rendre pour s'assurer que les données sont à jour
+    ce.innerHTML='';
+    const ar=ARC[k],[y,m]=k.split('-');
+    renderTbl(ar.tableData,parseInt(y),parseInt(m)-1,`ac-${k}`,true);
+    appendArchButtons(k);
+  }
+}
+
+function appendArchButtons(k){
+  const ce=document.getElementById(`ac-${k}`);
+  // Retirer les anciens boutons
+  ce.querySelectorAll('.arch-btns').forEach(e=>e.remove());
+  const ar=ARC[k];
+  const div=document.createElement('div');
+  div.className='arch-btns row'; div.style.marginTop='14px'; div.style.gap='10px';
+  if(!ar.validated){
+    div.innerHTML=`<button class="btn bteal" onclick="valArch('${k}')">✓ Valider ce tableau</button>`;
+  } else {
+    div.innerHTML=`<button class="btn bamb" onclick="recompute('${k}')">↻ Recalculer les stats</button>`;
+  }
+  ce.appendChild(div);
+}
+
+function valArch(k){
+  const ar=ARC[k]; if(!ar) return;
+  const {perm,bu}=calcPB(ar.tableData.assignments);
+  ARC[k].validated=true; ARC[k].perm=perm; ARC[k].bu=bu;
+  document.getElementById(`ac-${k}`).innerHTML='';
+  renderArch(); renderStat(); saveToServer(); toast('✓ Tableau archivé validé');
+}
+
+// ═══════════════════════════════════════════
+// IMPRESSION STATISTIQUES
+// ═══════════════════════════════════════════
+function printStats(){
+  const now=new Date();
+  const dateGen=now.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+
+  const tot={};
+  G.forEach(g=>{tot[g.nom]={p:g.pm,b:g.bm};});
+  const vm=Object.keys(ARC).filter(k=>ARC[k].validated).sort();
+  vm.forEach(k=>{
+    G.forEach(g=>{
+      if(!tot[g.nom])return;
+      tot[g.nom].p+=(ARC[k].perm?.[g.nom])||0;
+      tot[g.nom].b+=(ARC[k].bu?.[g.nom])||0;
+    });
+  });
+  const tp=Object.values(tot).reduce((s,v)=>s+v.p,0);
+  const tb=Object.values(tot).reduce((s,v)=>s+v.b,0);
+
+  // Construire l'en-tête du tableau
+  let thead='<thead><tr><th rowspan="2" style="text-align:left;padding-left:10px;min-width:80px">Gestionnaire</th>';
+  vm.forEach(k=>{const[y,m]=k.split('-');thead+=`<th colspan="2" class="mh">${MOIS[parseInt(m)-1].substring(0,4)} ${y}</th>`;});
+  thead+='<th colspan="2" class="th">Total</th></tr><tr>';
+  vm.forEach(()=>{thead+='<th>Perm</th><th>BU</th>';});
+  thead+='<th>Perm</th><th>BU</th></tr></thead>';
+
+  // Construire le corps
+  let tbody='<tbody>';
+  G.forEach(g=>{
+    tbody+=`<tr><td class="gn">${g.nom}<span class="tx">${g.taux}%</span></td>`;
+    vm.forEach(k=>{
+      const p=(ARC[k].perm?.[g.nom])||0, b=(ARC[k].bu?.[g.nom])||0;
+      tbody+=`<td class="pv">${p||'—'}</td><td class="bv">${b||'—'}</td>`;
+    });
+    tbody+=`<td class="pv"><strong>${tot[g.nom]?.p||0}</strong></td><td class="bv"><strong>${tot[g.nom]?.b||0}</strong></td></tr>`;
+  });
+
+  // Ligne totaux
+  const sm={},sb={};
+  vm.forEach(k=>{sm[k]=0;sb[k]=0;G.forEach(g=>{sm[k]+=(ARC[k].perm?.[g.nom])||0;sb[k]+=(ARC[k].bu?.[g.nom])||0;});});
+  tbody+='<tr class="tot"><td class="gn">TOTAL</td>';
+  vm.forEach(k=>{tbody+=`<td><strong>${sm[k]}</strong></td><td><strong>${sb[k]}</strong></td>`;});
+  tbody+=`<td><strong>${tp}</strong></td><td><strong>${tb}</strong></td></tr></tbody>`;
+
+  const html=`<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8">
+<title>Statistiques Permanences & Back-Up</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@page{size:A4 landscape;margin:8mm 10mm;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#fff;color:#000;font-size:9pt;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+h1{font-family:'Fraunces',serif;font-size:14pt;font-weight:700;color:#1a3a5c;margin-bottom:2mm;}
+.sub{font-size:8pt;color:#666;margin-bottom:5mm;}
+.kpis{display:flex;gap:8mm;margin-bottom:6mm;}
+.kpi{border:1px solid #ddd;border-radius:6px;padding:4mm 6mm;min-width:35mm;}
+.kval{font-family:'Fraunces',serif;font-size:18pt;font-weight:700;color:#1a3a5c;line-height:1;}
+.klbl{font-size:7pt;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-top:1mm;}
+table{width:100%;border-collapse:collapse;font-size:8pt;}
+th{padding:5px 6px;text-align:center;font-family:'DM Sans',sans-serif;font-weight:600;font-size:7.5pt;border:0.5px solid #ccc;white-space:nowrap;}
+th.mh{background:#dce8f5;color:#1a3a5c;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+th.th{background:#d4ede6;color:#1a5c4a;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+td{border:0.5px solid #ddd;padding:4px 6px;text-align:center;}
+td.gn{text-align:left;padding-left:8px;font-family:'JetBrains Mono',monospace;font-size:8pt;font-weight:500;color:#1a3a5c;}
+.tx{display:block;font-size:7pt;color:#aaa;font-family:'DM Sans',sans-serif;font-weight:400;}
+td.pv{color:#1a3a5c;font-weight:600;}
+td.bv{color:#2a7a6e;font-weight:600;}
+tr.tot td{background:#f0f7f5;font-weight:700;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+tbody tr:nth-child(even) td{background:#fafaf8;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+</style>
+</head><body>
+<h1>Statistiques — Permanences & Back-Up</h1>
+<div class="sub">Généré le ${dateGen} · ${vm.length} mois validés</div>
+<div class="kpis">
+  <div class="kpi"><div class="kval">${G.length}</div><div class="klbl">Gestionnaires</div></div>
+  <div class="kpi"><div class="kval" style="color:#1a3a5c">${tp}</div><div class="klbl">Permanences totales</div></div>
+  <div class="kpi"><div class="kval" style="color:#2a7a6e">${tb}</div><div class="klbl">Back-Up totaux</div></div>
+  <div class="kpi"><div class="kval" style="color:#b86e1a">${vm.length}</div><div class="klbl">Mois validés</div></div>
+</div>
+<table>${thead}${tbody}</table>
+</body></html>`;
+
+  const w=window.open('','_blank','width=960,height=660');
+  w.document.write(html);
+  w.document.close();
+  w.onload=()=>{w.focus();w.print();};
+}
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),3200);
+}
+</script>
+</body>
+</html>
