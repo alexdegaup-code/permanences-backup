@@ -37,16 +37,6 @@ Le serveur démarre sur **http://localhost:3000**
 
 ---
 
-## Première connexion
-
-Identifiants par défaut :
-- **Utilisateur** : `admin`
-- **Mot de passe** : `Admin1234!`
-
-⚠️ **Changez le mot de passe immédiatement** après la première connexion via le bouton "🔑 Mot de passe" dans l'interface.
-
----
-
 ## Démarrage automatique (Linux avec systemd)
 
 Créer le fichier `/etc/systemd/system/permanences.service` :
