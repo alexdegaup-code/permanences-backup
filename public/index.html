@@ -851,18 +851,58 @@ function buildMonth(year,month) {
 
   // ── Pénalité anti-répétition : même jour de semaine ──
   // Construit un map { dow → Set(noms) } à partir :
-  //   1) du mois précédent archivé (mêmes jours de semaine)
+  //   1) de la DERNIÈRE SEMAINE du mois précédent archivé (pas tout le mois)
   //   2) mis à jour dynamiquement au fil des semaines du mois courant
   const prevKey=month===0?`${year-1}-12`:`${year}-${p2(month)}`;
-  const penalByDow={}; // { 1:'Lundi', 2:'Mardi', ... } → Set(noms)
-  for(let d=1;d<=5;d++) penalByDow[d]=new Set();
+  // penalByDow : Map<'dow|half', Set<nom>> — pénalité par créneau exact (jour+matin/apm)
+  const penalByDow=new Map();
+  const pdSet=(map,k)=>{ if(!map.has(k)) map.set(k,new Set()); return map.get(k); };
   if(ARC[prevKey]){
     const prevAsgn=ARC[prevKey].tableData.assignments;
-    Object.keys(prevAsgn).forEach(dateStr=>{
-      const a=prevAsgn[dateStr]; if(!a||a.ferie) return;
-      const dow=new Date(dateStr+'T12:00:00').getDay();
-      [a.pm,a.pa,a.bm,a.ba].forEach(n=>{ if(n&&n!=='N/A') penalByDow[dow].add(n); });
-    });
+    // Ne prendre que la DERNIÈRE semaine du mois précédent (7 derniers jours ouvrés)
+    const prevDates=Object.keys(prevAsgn).filter(s=>{ const a=prevAsgn[s]; return a&&!a.ferie; }).sort();
+    const lastWeekThreshold=prevDates.length>0 ? prevDates[prevDates.length-1] : null;
+    if(lastWeekThreshold){
+      // Trouver le lundi de la dernière semaine
+      const lastDt=new Date(lastWeekThreshold+'T12:00:00');
+      const dayOfWeek=lastDt.getDay();
+      const diff=lastDt.getDate()-dayOfWeek+(dayOfWeek===0?-6:1);
+      const lastMondayDt=new Date(lastDt); lastMondayDt.setDate(diff);
+      const lastMondayStr=ds(lastMondayDt);
+      prevDates.filter(s=>s>=lastMondayStr).forEach(dateStr=>{
+        const a=prevAsgn[dateStr]; if(!a||a.ferie) return;
+        const dow=new Date(dateStr+'T12:00:00').getDay();
+        if(a.pm&&a.pm!=='N/A') pdSet(penalByDow,penalKey(dow,'m')).add(a.pm);
+        if(a.pa&&a.pa!=='N/A') pdSet(penalByDow,penalKey(dow,'a')).add(a.pa);
+        if(a.bm&&a.bm!=='N/A') pdSet(penalByDow,penalKey(dow,'m')).add(a.bm);
+        if(a.ba&&a.ba!=='N/A') pdSet(penalByDow,penalKey(dow,'a')).add(a.ba);
+      });
+    }
+  }
+
+  // ── Contrainte cheval entre mois : récupérer qui a déjà fait perm/BU la semaine de début de mois ──
+  // Si le mois commence en milieu de semaine (ex: jeudi), les gestionnaires ayant fait
+  // perm ou BU la semaine précédente (côté mois précédent) ne peuvent plus en faire cette semaine.
+  const carryPermDone=new Set(); // gestionnaires ayant déjà fait 1 perm la semaine à cheval
+  const carryBUDone=new Set();   // gestionnaires ayant déjà fait 1 BU la semaine à cheval
+  if(ARC[prevKey] && days.length>0){
+    const firstDay=days[0];
+    // Si le mois ne commence pas un lundi, il y a une semaine à cheval
+    if(firstDay.dow !== 1){
+      const prevAsgn=ARC[prevKey].tableData.assignments;
+      // Trouver le lundi de cette même semaine ISO dans le mois précédent
+      const firstDt=new Date(firstDay.dateStr+'T12:00:00');
+      const dayOfWeek=firstDt.getDay();
+      const diff=firstDt.getDate()-dayOfWeek+(dayOfWeek===0?-6:1);
+      const mondayDt=new Date(firstDt); mondayDt.setDate(diff);
+      const mondayStr=ds(mondayDt);
+      // Parcourir les jours du mois précédent appartenant à cette même semaine ISO
+      Object.keys(prevAsgn).filter(s=>s>=mondayStr&&s<firstDay.dateStr).forEach(dateStr=>{
+        const a=prevAsgn[dateStr]; if(!a||a.ferie) return;
+        [a.pm,a.pa].forEach(n=>{ if(n&&n!=='N/A') carryPermDone.add(n); });
+        [a.bm,a.ba].forEach(n=>{ if(n&&n!=='N/A') carryBUDone.add(n); });
+      });
+    }
   }
 
   // ══════════════════════════════════════════════════
@@ -871,24 +911,45 @@ function buildMonth(year,month) {
   // Principe : chaque semaine, chaque gestionnaire ne peut faire qu'UNE perm (matin OU apm).
   // Le tri par ratio normalisé assure l'équité sur le mois.
   // Si un gestionnaire est déjà assigné cette semaine → exclu strictement.
-  weeks.forEach(week=>{
+  weeks.forEach((week,wi)=>{
     const wdDays=week.filter(d=>!d.ferie);
-    const wPermDone=new Set(); // gestionnaires ayant déjà leur perm cette semaine
+    // Semaine 1 : initialiser avec les perms déjà faites côté mois précédent (cheval de mois)
+    const wPermDone=new Set(wi===0 ? carryPermDone : []);
+    // Pénalité glissante : ne pénaliser que la SEMAINE PRÉCÉDENTE (pas le mois entier)
+    // → évite qu'une personne assignée au début du mois soit pénalisée pour toutes les semaines suivantes
+    if(wi===0){
+      // penalByDow déjà initialisé avec la dernière semaine du mois précédent → on garde
+    } else {
+      // Réinitialiser et repeupler avec uniquement la semaine précédente
+      penalByDow.clear();
+      weeks[wi-1].forEach(day=>{
+        const a=asgn[day.dateStr]; if(!a||a.ferie) return;
+        if(a.pm&&a.pm!=='N/A') pdSet(penalByDow,penalKey(day.dow,'m')).add(a.pm);
+        if(a.pa&&a.pa!=='N/A') pdSet(penalByDow,penalKey(day.dow,'a')).add(a.pa);
+      });
+    }
     wdDays.forEach(day=>{
       const j=JOURS[day.dow-1];
-      const penal=penalByDow[day.dow];
-      // Perm matin : pool strict (1/semaine) → fallback si vide (vacances/absences)
-      let poolPm=G.filter(g=>canPerm(g,j,day.dateStr,'m')&&!wPermDone.has(g.nom));
+      // Noms ayant fait ce créneau exact la semaine précédente → exclus en priorité 1
+      const blockedPm=penalByDow.get(penalKey(day.dow,'m'))||new Set();
+      const blockedPa=penalByDow.get(penalKey(day.dow,'a'))||new Set();
+
+      // Perm matin : exclusion stricte créneau précédent + contrainte semaine
+      // Fallback 1 : lever exclusion créneau (mais garder contrainte semaine)
+      // Fallback 2 : lever les deux si vraiment vide
+      let poolPm=G.filter(g=>canPerm(g,j,day.dateStr,'m')&&!wPermDone.has(g.nom)&&!blockedPm.has(g.nom));
+      if(!poolPm.length) poolPm=G.filter(g=>canPerm(g,j,day.dateStr,'m')&&!wPermDone.has(g.nom));
       if(!poolPm.length) poolPm=G.filter(g=>canPerm(g,j,day.dateStr,'m'));
-      const pm=bestP(poolPm,pc,[],penal);
+      const pm=bestP(poolPm,pc,[],penalByDow,day.dow,'m');
 
-      // Perm apm : même logique, exclure aussi le gestionnaire du matin
-      let poolPa=G.filter(g=>canPerm(g,j,day.dateStr,'a')&&!wPermDone.has(g.nom));
+      // Perm apm : même logique + exclure le gestionnaire du matin
+      let poolPa=G.filter(g=>canPerm(g,j,day.dateStr,'a')&&!wPermDone.has(g.nom)&&!blockedPa.has(g.nom));
+      if(!poolPa.length) poolPa=G.filter(g=>canPerm(g,j,day.dateStr,'a')&&!wPermDone.has(g.nom));
       if(!poolPa.length) poolPa=G.filter(g=>canPerm(g,j,day.dateStr,'a'));
-      const pa=bestP(poolPa,pc,[pm],penal);
+      const pa=bestP(poolPa,pc,[pm],penalByDow,day.dow,'a');
 
-      if(pm){ pc[pm.nom]+=0.5; wPermDone.add(pm.nom); penalByDow[day.dow].add(pm.nom); }
-      if(pa){ pc[pa.nom]+=0.5; wPermDone.add(pa.nom); penalByDow[day.dow].add(pa.nom); }
+      if(pm){ pc[pm.nom]+=0.5; wPermDone.add(pm.nom); pdSet(penalByDow,penalKey(day.dow,'m')).add(pm.nom); }
+      if(pa){ pc[pa.nom]+=0.5; wPermDone.add(pa.nom); pdSet(penalByDow,penalKey(day.dow,'a')).add(pa.nom); }
       asgn[day.dateStr]={pm:pm?.nom||'N/A',pa:pa?.nom||'N/A',bm:null,ba:null,bmTT:false,baTT:false,ferie:false};
     });
   });
@@ -905,39 +966,61 @@ function buildMonth(year,month) {
   //   c) Non-TT prioritaires (bestBU)
   //   d) Fallback anti-N/A : si le pool strict est vide (ex: semaine courte, beaucoup d'absents),
   //      on lève la contrainte hebdomadaire UNIQUEMENT pour remplir la cellule
-  // Réinitialiser penalByDow pour les BU (calcul séparé)
-  for(let d=1;d<=5;d++) penalByDow[d]=new Set();
+  // Réinitialiser penalByDow pour les BU (calcul séparé) — uniquement dernière semaine prev mois
+  penalByDow.clear();
   if(ARC[prevKey]){
     const prevAsgn=ARC[prevKey].tableData.assignments;
-    Object.keys(prevAsgn).forEach(dateStr=>{
-      const a=prevAsgn[dateStr]; if(!a||a.ferie) return;
-      const dow=new Date(dateStr+'T12:00:00').getDay();
-      [a.bm,a.ba].forEach(n=>{ if(n&&n!=='N/A') penalByDow[dow].add(n); });
-    });
+    const prevDates2=Object.keys(prevAsgn).filter(s=>{ const a=prevAsgn[s]; return a&&!a.ferie; }).sort();
+    if(prevDates2.length>0){
+      const lastDt2=new Date(prevDates2[prevDates2.length-1]+'T12:00:00');
+      const dow2=lastDt2.getDay(); const diff2=lastDt2.getDate()-dow2+(dow2===0?-6:1);
+      const lastMonDt2=new Date(lastDt2); lastMonDt2.setDate(diff2);
+      const lastMonStr2=ds(lastMonDt2);
+      prevDates2.filter(s=>s>=lastMonStr2).forEach(dateStr=>{
+        const a=prevAsgn[dateStr]; if(!a||a.ferie) return;
+        const dow=new Date(dateStr+'T12:00:00').getDay();
+        if(a.bm&&a.bm!=='N/A') pdSet(penalByDow,penalKey(dow,'m')).add(a.bm);
+        if(a.ba&&a.ba!=='N/A') pdSet(penalByDow,penalKey(dow,'a')).add(a.ba);
+      });
+    }
   }
-  weeks.forEach(week=>{
+  weeks.forEach((week,wi)=>{
     const wdDays=week.filter(d=>!d.ferie);
-    const wBUDone=new Set(); // gestionnaires ayant déjà leur BU cette semaine
+    // Semaine 1 : initialiser avec les BU déjà faits côté mois précédent (cheval de mois)
+    const wBUDone=new Set(wi===0 ? carryBUDone : []);
+    // Pénalité glissante BU : uniquement semaine précédente
+    if(wi>0){
+      penalByDow.clear();
+      weeks[wi-1].forEach(day=>{
+        const a=asgn[day.dateStr]; if(!a||a.ferie) return;
+        if(a.bm&&a.bm!=='N/A') pdSet(penalByDow,penalKey(day.dow,'m')).add(a.bm);
+        if(a.ba&&a.ba!=='N/A') pdSet(penalByDow,penalKey(day.dow,'a')).add(a.ba);
+      });
+    }
     wdDays.forEach(day=>{
       const j=JOURS[day.dow-1];
       const a=asgn[day.dateStr];
       const usedToday=[a.pm,a.pa].filter(n=>n&&n!=='N/A');
-      const penal=penalByDow[day.dow];
+      // Noms ayant fait ce créneau BU exact la semaine précédente → exclus en priorité 1
+      const blockedBm=penalByDow.get(penalKey(day.dow,'m'))||new Set();
+      const blockedBa=penalByDow.get(penalKey(day.dow,'a'))||new Set();
 
-      // BU matin — pool strict d'abord
-      let poolBm=G.filter(g=>canBU(g,j,day.dateStr,'m')&&!usedToday.includes(g.nom)&&!wBUDone.has(g.nom));
-      // Fallback si pool vide : lever la contrainte semaine (mais garder les autres)
+      // BU matin : exclusion stricte créneau + contrainte semaine + non-cumul jour
+      // Fallback 1 : lever exclusion créneau ; Fallback 2 : lever contrainte semaine
+      let poolBm=G.filter(g=>canBU(g,j,day.dateStr,'m')&&!usedToday.includes(g.nom)&&!wBUDone.has(g.nom)&&!blockedBm.has(g.nom));
+      if(!poolBm.length) poolBm=G.filter(g=>canBU(g,j,day.dateStr,'m')&&!usedToday.includes(g.nom)&&!wBUDone.has(g.nom));
       if(!poolBm.length) poolBm=G.filter(g=>canBU(g,j,day.dateStr,'m')&&!usedToday.includes(g.nom));
-      const bm=bestBU(poolBm,bc,[],j,penal);
+      const bm=bestBU(poolBm,bc,[],j,penalByDow,day.dow,'m');
 
-      // BU apm — pool strict d'abord (exclure aussi BU matin)
+      // BU apm : même logique + exclure BU matin
       const bmNom=bm?.nom;
-      let poolBa=G.filter(g=>canBU(g,j,day.dateStr,'a')&&!usedToday.includes(g.nom)&&g.nom!==bmNom&&!wBUDone.has(g.nom));
+      let poolBa=G.filter(g=>canBU(g,j,day.dateStr,'a')&&!usedToday.includes(g.nom)&&g.nom!==bmNom&&!wBUDone.has(g.nom)&&!blockedBa.has(g.nom));
+      if(!poolBa.length) poolBa=G.filter(g=>canBU(g,j,day.dateStr,'a')&&!usedToday.includes(g.nom)&&g.nom!==bmNom&&!wBUDone.has(g.nom));
       if(!poolBa.length) poolBa=G.filter(g=>canBU(g,j,day.dateStr,'a')&&!usedToday.includes(g.nom)&&g.nom!==bmNom);
-      const ba=bestBU(poolBa,bc,[bm],j,penal);
+      const ba=bestBU(poolBa,bc,[bm],j,penalByDow,day.dow,'a');
 
-      if(bm){ bc[bm.nom]+=0.5; wBUDone.add(bm.nom); penalByDow[day.dow].add(bm.nom); }
-      if(ba){ bc[ba.nom]+=0.5; wBUDone.add(ba.nom); penalByDow[day.dow].add(ba.nom); }
+      if(bm){ bc[bm.nom]+=0.5; wBUDone.add(bm.nom); pdSet(penalByDow,penalKey(day.dow,'m')).add(bm.nom); }
+      if(ba){ bc[ba.nom]+=0.5; wBUDone.add(ba.nom); pdSet(penalByDow,penalKey(day.dow,'a')).add(ba.nom); }
       a.bm=bm?.nom||'N/A'; a.ba=ba?.nom||'N/A';
       a.bmTT=!!(bm&&bm.tt.includes(j));
       a.baTT=!!(ba&&ba.tt.includes(j));
@@ -972,12 +1055,18 @@ function conge(g,j,h){
 // Celui dont le ratio est le plus bas passe en premier → équité proportionnelle au taux
 function ratio(g, counts){ return counts[g.nom] / (g.taux / 100); }
 
+// Clé de pénalité : dow (1-5) + créneau ('m' ou 'a')
+// → GERMO perm lundi matin → pénalisé sur "1|m" seulement, libre sur "1|a"
+function penalKey(dow, half){ return `${dow}|${half}`; }
+
 // Tri pour permanences : ratio normalisé le plus bas d'abord
-// penalSet : Set de noms à pénaliser (déjà assignés ce jour de semaine récemment)
-function bestP(pool,counts,excl,penalSet){
+// penalMap : Map<"dow|half", Set<nom>> — pénalise uniquement le créneau exact (jour + matin/apm)
+function bestP(pool,counts,excl,penalMap,dow,half){
   const en=(excl||[]).filter(Boolean).map(x=>x?.nom||x);
   const av=pool.filter(g=>!en.includes(g.nom));
   if(!av.length) return null;
+  const pk=penalMap && dow!=null && half!=null ? penalKey(dow,half) : null;
+  const penalSet=pk ? penalMap.get(pk) : null;
   av.sort((a,b)=>{
     const ra=ratio(a,counts)+(penalSet&&penalSet.has(a.nom)?1000:0);
     const rb=ratio(b,counts)+(penalSet&&penalSet.has(b.nom)?1000:0);
@@ -988,11 +1077,13 @@ function bestP(pool,counts,excl,penalSet){
 }
 
 // Tri pour BU : NON-TT prioritaires ; à l'intérieur de chaque groupe : ratio normalisé le plus bas
-// penalSet : Set de noms à pénaliser (déjà assignés ce jour de semaine récemment)
-function bestBU(pool,counts,excl,jourNom,penalSet){
+// penalMap : Map<"dow|half", Set<nom>> — même logique créneau exact
+function bestBU(pool,counts,excl,jourNom,penalMap,dow,half){
   const en=(excl||[]).filter(Boolean).map(x=>x?.nom||x);
   const av=pool.filter(g=>!en.includes(g.nom));
   if(!av.length) return null;
+  const pk=penalMap && dow!=null && half!=null ? penalKey(dow,half) : null;
+  const penalSet=pk ? penalMap.get(pk) : null;
   const srt=(a,b)=>{
     const ra=ratio(a,counts)+(penalSet&&penalSet.has(a.nom)?1000:0);
     const rb=ratio(b,counts)+(penalSet&&penalSet.has(b.nom)?1000:0);
